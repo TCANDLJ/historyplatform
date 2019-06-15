@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.AdminMapper">
+
+    <select id="countTotal" resultType="java.lang.Integer">
+
+        SELECT count(1) FROM article t WHERE t.status=4
+        AND DATE(create_time) &lt;=#{endDate}
+        and DATE(create_time) >=#{startDate}
+    </select>
+    
+    <select id="queryArticle" resultType="com._520it.pojo.ArticleQuery">
+
+        SELECT t.id id,t.title title,(select name from user where id=t.userid) username ,DATE(t.create_time) createTime FROM article t WHERE t.status=4
+        AND DATE(create_time) &lt;=#{article.endDate}
+        and DATE(create_time) >=#{article.startDate}
+        ORDER BY t.create_time desc
+        limit #{startIndex},#{endIndex}
+
+    </select>
+    <update id="updateStatus">
+
+        UPDATE   article set  status=#{status}  ,  adminId=#{adminId} WHERE id=#{id}
+    </update>
+    
+    <select id="getArticleDetail" resultType="com._520it.pojo.ArticleDetail">
+       select
+         t2.content content,t2.title title,t1.`name` authorName,
+         t1.picture_src  headPicture,t1.follower_num  stars,
+         t1.type type , t1.score score,t2.create_time createTime,t2.read_num readNum,
+         (select count(1) from article t3 where t3.userid=t1.id) articles,
+         (select sum(t4.read_num) from article t4 where t4.userid=t1.id) `reads`,
+         (select t5.ranks  from (select
+         p.score score,
+         p.id id,
+         @curRank := if(@prevRank=score,@curRank,@inRank) as ranks,
+         @inRank := @inRank+1,
+         @prevRank := score
+        from user p,(select @curRank := 0,@prevRank := null,@inRank := 1) q order by p.score desc) t5
+        where t5.id=t1.id)  `rank`
+        from
+        user t1 ,
+        (select title,content,userid,create_time,read_num  from  article  where id=#{id})  t2
+        where t1.id=t2.userid
+    </select>
+    
+    <update id="updateAdmin">
+        UPDATE  user  SET
+          phone=#{phone} , email=#{email}
+          <if test="password != null">
+            , password=#{password}
+          </if>
+        WHERE
+        id=#{id}
+
+    </update>
+
+</mapper>

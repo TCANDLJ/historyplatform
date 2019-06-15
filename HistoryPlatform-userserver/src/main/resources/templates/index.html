@@ -1,0 +1,526 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>人民医院公众服务平台</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+	<link href="/css/style.css" rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href="/css/slider.css">
+	<script src="/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+        jQuery(document).ready(function($) {
+
+        });
+        function hovering(a){
+            $("#"+a).show();
+        }
+        function move(b){
+            $("#"+b).hide();
+        }
+        function selectHistory(a){
+            for(var i=1;i<=5;i++){
+                $("#selectHistory"+i).css("background-color","Lavender");
+                $("#showHistory"+i).css("display","none");
+            }
+            $("#selectHistory"+a).css("background-color","red");
+            $("#showHistory"+a).show();
+        }
+
+	</script>
+	<style type="text/css">
+		*{padding:0;margin:0;}
+		body{
+			background-color: 	Lavender;
+		}
+
+		li{
+			list-style: none;
+			font-family: 微软雅黑;
+			line-height: 20px;
+		}
+		a:link{
+			text-decoration: none;
+		}
+		#history p:hover{
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+<div th:replace="minhead::minhead"></div>
+<div class="header-middle" style="background-color: white;">
+	<div class="header-search">
+		<form th:action="@{/illness/queryIllness}" th:method="post">
+			<div class="search" style="width: 450px;border: 1px solid Lavender ;">
+				<input type="search" id="ill"   placeholder="请输入查询疾病名称，比如：感冒" name="name"  onblur="if (this.value.trim() == '') {this.value = null;}" required="">
+			</div>
+			<div class="sear-sub">
+				<input type="submit" onclick="queryIllness()" value="搜索">
+			</div>
+			<div class="clearfix"></div>
+		</form>
+	</div>
+</div>
+<!--header-top-->
+<div class="header-top">
+	<div class="container">
+		<nav class="navbar navbar-default">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<div class="logo">
+					<h1 style="font-size: 40px;">人民医院公众服务平台</h1>
+				</div>
+			</div>
+			<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+				<div class="top-menu">
+					<nav class="menu menu--francisco">
+						<ul class="nav navbar-nav menu__list">
+							<li class="menu__item menu__item--current"><a href="/online/queryOnlineDoctors" class="menu__link"><span class="menu__helper">在线就诊</span></a></li>
+							<li class="menu__item"><a href="/history/queryHistory" class="menu__link"><span class="menu__helper">全国医院</span></a></li>
+							<li class="menu__item"><a href="/article/queryNews/0" class="menu__link"><span class="menu__helper">健康科普</span></a></li>
+							<li class="menu__item"><a href="/tribune.html" class="menu__link" target="_blank"><span class="menu__helper">病友论坛</span></a></li>
+							<li class="menu__item"><a href="/detail.html" class="menu__link"><span class="menu__helper">就医推荐</span></a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</nav>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<div style="width: 1100px;height: 500px;margin: auto;background-image:url('http://localhost:8080/img/upload/ad1.jpg');">
+	<div style="width: 200px;height: 500px;float: left;">
+		<div id="neike" onmouseover="hovering('neike1')" onmouseout = "move('neike1')" style="width: 200px;height: 100px;text-align: center;">
+			<li style="font-size: 30px;">内科</li><br/>
+			<li style="font-size: 15px;"><a href="/illness/query/糖尿病">糖尿病</a> | <a href="/illness/query/高血压">高血压</a> | <a href="/illness/query/冠心病">冠心病</a></li>
+		</div>
+		<div id="waike" onmouseover="hovering('waike1')" onmouseout = "move('waike1')"  style="width: 200px;height: 100px;text-align: center;">
+			<li style="font-size: 30px;">外科</li><br/>
+			<li style="font-size: 15px;"><a href="/illness/query/乳腺癌">乳腺癌</a> | <a href="/illness/query/血管癌">血管癌</a> | <a href="/illness/query/肝癌">肝癌</a></li>
+		</div>
+		<div id="fuke" onmouseover="hovering('fuke1')" onmouseout = "move('fuke1')"    style="width: 200px;height: 100px;text-align: center;">
+			<li style="font-size: 30px;">妇产科</li><br/>
+			<li style="font-size: 15px;"><a href="/illness/query/不孕">不孕</a> | <a href="/illness/query/宫颈癌">宫颈癌</a> |  <a href="/illness/query/宫颈炎">宫颈炎</a></li>
+		</div>
+		<div id="guke" onmouseover="hovering('guke1')" onmouseout = "move('guke1')"  style="width: 200px;height: 100px;text-align: center;">
+			<li style="font-size: 30px;">骨科</li><br/>
+			<li style="font-size: 15px;"><a href="/illness/query/颈椎病">颈椎病</a> | <a href="/illness/query/骨质增生">骨质增生</a> | <a href="/illness/query/关节炎">关节炎</a></li>
+		</div>
+		<div id="erke" onmouseover="hovering('erke1')" onmouseout = "move('erke1')"  style="width: 200px;height: 100px;text-align: center;">
+			<li style="font-size: 30px;">耳鼻咽喉科</li><br/>
+			<li style="font-size: 15px;"><a href="/illness/query/鼻炎">鼻炎</a> | <a href="/illness/query/>白内障">白内障</a> | <a href="/illness/query/中耳炎">中耳炎</a></li>
+		</div>
+	</div>
+	<div id="neike1" onmouseover="hovering('neike1')" onmouseout = "move('neike1')" style="width: 300px;height: 500px;float: left;text-align: left; display: none;">
+		<li style="font-size: 20px;">内科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/甲亢">甲亢</a> |<a href="/illness/query/乙肝"> 乙肝</a> | <a href="/illness/query/胃炎">胃炎</a> | <a href="/illness/query/高血脂">高血脂</a> | <a href="/illness/query/脑梗塞">脑梗塞</a> | <a href="/illness/query/强直性">强直性</a> | <a href="/illness/query/脊柱炎">脊柱炎</a> | <a href="/illness/query/癫痫">癫痫 </a>| <a href="/illness/query/痛风">痛风</a> | <a href="/illness/query/哮喘">哮喘</a> | <a href="/illness/query/肺结核">肺结核</a> | <a href="/illness/query/胃溃疡">胃溃疡</a> | <a href="/illness/query/克罗恩病">克罗恩病</a> | <a href="/illness/query/肝硬化">肝硬化</a></li><br/>
+		<li style="font-size: 20px;">神经内科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/脑梗塞">脑梗塞</a> | <a href="/illness/query/癫痫">癫痫</a> | <a href="/illness/query/面瘫">面瘫</a> | <a href="/illness/query/三叉神经痛">三叉神经痛</a> | <a href="/illness/query/老年痴呆">老年痴呆</a> | <a href="/illness/query/脑血栓形成">脑血栓形成</a> | <a href="/illness/query/帕金森病">帕金森病</a> | <a href="/illness/query/脑供血不足">脑供血不足</a> | <a href="/illness/query/失眠">失眠</a> | <a href="/illness/query/面肌抽搐">面肌抽搐 </a>| <a href="/illness/query/重症肌无力">重症肌无力</a></li><br/>
+		<li style="font-size: 20px;">内分泌科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/甲亢">甲亢</a> | <a href="/illness/query/高尿酸血症">高尿酸血症</a> | <a href="/illness/query/痛风">痛风</a> | <a href="/illness/query/甲状腺炎">甲状腺炎</a> | <a href="/illness/query/糖尿病足">糖尿病足</a> | <a href="/illness/query/肥胖症">肥胖症</a> | <a href="/illness/query/低血糖">低血糖</a> | <a href="/illness/query/甲减">甲减</a> | <a href="/illness/query/亚甲炎">亚甲炎</a> | <a href="/illness/query/甲状腺瘤">甲状腺瘤</a> | <a href="/illness/query/侏儒症">侏儒症</a> | <a href="/illness/query/习惯性流产">习惯性流产</a></li><br/>
+		<li style="font-size: 20px;">风湿免疫科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/强直性脊柱炎">强直性脊柱炎</a> | <a href="/illness/query/风湿病">风湿病</a> | <a href="/illness/query/类风湿性关节炎">类风湿性关节炎</a> | <a href="/illness/query/干燥综合征">干燥综合征</a> | <a href="/illness/query/特发性关节痛综合征">特发性关节痛综合征</a> | <a href="/illness/query/硬皮病">硬皮病</a> | <a href="/illness/query/系统性红斑狼疮">系统性红斑狼疮</a> | <a href="/illness/query/白塞病">白塞病</a></li>
+	</div>
+	<div id="waike1" onmouseover="hovering('waike1')" onmouseout = "move('waike1')" style="width: 300px;height: 500px;float: left;text-align: left;display: none;">
+		<li style="font-size: 20px;">外科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/前列腺炎">前列腺炎</a> | <a href="/illness/query/肺癌">肺癌</a> | <a href="/illness/query/痔疮">痔疮</a> | <a href="/illness/query/甲状腺腺瘤">甲状腺腺瘤</a> | <a href="/illness/query/直肠癌">直肠癌</a> | <a href="/illness/query/肾结石">肾结石</a> | <a href="/illness/query/结肠癌">结肠癌</a> | <a href="/illness/query/胆囊结石">胆囊结石</a> | <a href="/illness/query/胃癌">胃癌</a> | <a href="/illness/query/食管癌">食管癌</a> | <a href="/illness/query/胆囊癌">胆囊癌</a> | <a href="/illness/query/肝血管瘤">肝血管瘤</a></li><br/>
+		<li style="font-size: 20px;">泌尿外科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/前列腺炎">前列腺炎</a> | <a href="/illness/query/早泄">早泄</a> | <a href="/illness/query/肾结石">肾结石</a> | <a href="/illness/query/包皮过长">包皮过长</a> | <a href="/illness/query/性功能障碍">性功能障碍</a> | <a href="/illness/query/男性不育症">男性不育症</a> | <a href="/illness/query/尿路感染">尿路感染</a> | <a href="/illness/query/前列腺增生">前列腺增生</a> | <a href="/illness/query/前列腺癌">前列腺癌</a> | <a href="/illness/query/肾积水">肾积水</a></li><br/>
+		<li style="font-size: 20px;">乳腺外科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/乳腺增生">乳腺增生</a> | <a href="/illness/query/乳腺纤维腺瘤">乳腺纤维腺瘤</a> | <a href="/illness/query/乳腺腺病">乳腺腺病</a> | <a href="/illness/query/急性乳腺炎">急性乳腺炎</a> | <a href="/illness/query/多乳房">多乳房</a> | <a href="/illness/query/乳腺导管扩张症">乳腺导管扩张症</a> | <a href="/illness/query/乳腺纤维瘤">乳腺纤维瘤</a> | <a href="/illness/query/乳头内陷">乳头内陷</a> | <a href="/illness/query/乳房纤维瘤">乳房纤维瘤</a></li><br/>
+		<li style="font-size: 20px;">普外科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/胃癌">胃癌</a> | <a href="/illness/query/甲状腺腺瘤">甲状腺腺瘤</a> | <a href="/illness/query/胰腺炎">胰腺炎</a> | <a href="/illness/query/甲状腺癌">甲状腺癌</a> | <a href="/illness/query/疝气">疝气</a> | <a href="/illness/query/胰腺癌">胰腺癌</a> | <a href="/illness/query/脂肪瘤">脂肪瘤</a> | <a href="/illness/query/甲状腺结节样病变">甲状腺结节样病变</a> | <a href="/illness/query/阑尾炎">阑尾炎</a> | <a href="/illness/query/胰腺囊肿">胰腺囊肿</a> | <a href="/illness/query/脾大">脾大</a></li>
+	</div>
+	<div id="fuke1" onmouseover="hovering('fuke1')" onmouseout = "move('fuke1')" style="width: 300px;height: 500px;float: left;text-align: left;display: none;">
+		<li style="font-size: 20px;">妇产科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/宫颈癌">宫颈癌</a> | <a href="/illness/query/月经不调">月经不调</a> | <a href="/illness/query/输卵管堵塞">输卵管堵塞</a> | <a href="/illness/query/阴道炎">阴道炎</a> | <a href="/illness/query/多囊卵巢综合征">多囊卵巢综合征</a> | <a href="/illness/query/围绝经期综合征">围绝经期综合征</a> | <a href="/illness/query/宫颈炎">宫颈炎</a> | <a href="/illness/query/盆腔炎">盆腔炎</a> | <a href="/illness/query/子宫内膜异位症">子宫内膜异位症</a> | <a href="/illness/query/子宫内膜增生">子宫内膜增生</a> | <a href="/illness/query/宫外孕">宫外孕</a> | <a href="/illness/query/子宫腺肌症">子宫腺肌症</a> | <a href="/illness/query/产后出血">产后出血</a> | <a href="/illness/query/早产">早产</a> | <a href="/illness/query/自然流产">自然流产</a> | <a href="/illness/query/巧克力囊肿">巧克力囊肿</a> | <a href="/illness/query/子宫脱垂">子宫脱垂</a> | <a href="/illness/query/宫颈癌前病变">宫颈癌前病变</a> | <a href="/illness/query/子宫颈息肉">子宫颈息肉</a> | <a href="/illness/query/畸胎瘤">畸胎瘤</a> | <a href="/illness/query/卵巢癌">卵巢癌</a> | <a href="/illness/query/子宫内膜息肉">子宫内膜息肉</a> | <a href="/illness/query/子宫内膜癌">子宫内膜癌</a> | <a href="/illness/query/子宫肌瘤">子宫肌瘤</a> | <a href="/illness/query/多囊卵巢综合症">多囊卵巢综合症</a> | <a href="/illness/query/宫颈囊肿">宫颈囊肿</a> | <a href="/illness/query/宫颈息肉">宫颈息肉</a> | <a href="/illness/query/性冷淡">性冷淡</a> | <a href="/illness/query/妇科炎症">妇科炎症</a> | <a href="/illness/query/人乳头瘤病毒">人乳头瘤病毒</a> | <a href="/illness/query/子宫息肉">子宫息肉</a> | <a href="/illness/query/外阴瘙痒">外阴瘙痒</a> | <a href="/illness/query/流产">流产</a> | <a href="/illness/query/羊水栓塞">羊水栓塞</a> | <a href="/illness/query/先兆流产">先兆流产</a> | <a href="/illness/query/子宫内膜炎">子宫内膜炎</a> | <a href="/illness/query/子宫癌">子宫癌</a> | <a href="/illness/query/异常分娩">异常分娩</a></li><br/>
+	</div>
+	<div id="guke1" onmouseover="hovering('guke1')" onmouseout = "move('guke1')" style="width: 300px;height: 500px;float: left;text-align: left;display: none;">
+		<li style="font-size: 20px;">骨科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/骨质增生">骨质增生</a> | <a href="/illness/query/肩周炎">肩周炎</a> | <a href="/illness/query/腱鞘炎">腱鞘炎</a> | <a href="/illness/query/半月板损伤">半月板损伤</a> | <a href="/illness/query/滑膜炎">滑膜炎</a> | <a href="/illness/query/关节炎">关节炎</a> | <a href="/illness/query/慢性腰背痛">慢性腰背痛</a> | <a href="/illness/query/股骨头缺血性坏死">股骨头缺血性坏死</a> | <a href="/illness/query/骨折">骨折</a> | <a href="/illness/query/颈椎间盘突出症">颈椎间盘突出症</a></li><br/>
+		<li style="font-size: 20px;">脊柱外科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/慢性腰背痛">慢性腰背痛</a> | <a href="/illness/query/颈椎间盘突出症">颈椎间盘突出症</a> | <a href="/illness/query/腰椎椎管狭窄症">腰椎椎管狭窄症</a> | <a href="/illness/query/脊髓型颈椎病">脊髓型颈椎病</a> | <a href="/illness/query/神经根型颈椎病">神经根型颈椎病</a> | <a href="/illness/query/脊柱骨折">脊柱骨折</a> | <a href="/illness/query/脊柱肿瘤">脊柱肿瘤</a> | <a href="/illness/query/椎间盘突出">椎间盘突出</a></li><br/>
+		<li style="font-size: 20px;">关节外科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/肩周炎">肩周炎</a> | <a href="/illness/query/半月板损伤">半月板损伤</a> | <a href="/illness/query/滑膜炎">滑膜炎</a> | <a href="/illness/query/痛风性关节炎">痛风性关节炎</a> | <a href="/illness/query/肩袖损伤">肩袖损伤</a> | <a href="/illness/query/肱骨外上髁炎">肱骨外上髁炎</a> | <a href="/illness/query/骨关节炎">骨关节炎</a> | <a href="/illness/query/先天性髋关节脱位">先天性髋关节脱位</a> | <a href="/illness/query/肌腱炎">肌腱炎</a></li><br/>
+		<li style="font-size: 20px;">创伤骨科常见病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/骨折">骨折</a> | <a href="/illness/query/跟腱炎">跟腱炎</a> | <a href="/illness/query/半月板撕裂">半月板撕裂</a> | <a href="/illness/query/跟腱断裂">跟腱断裂</a> | <a href="/illness/query/腓总神经损伤">腓总神经损伤</a> | <a href="/illness/query/髌骨骨折">髌骨骨折</a> | <a href="/illness/query/股骨颈骨折">股骨颈骨折</a> | <a href="/illness/query/踝关节骨折">踝关节骨折</a> | <a href="/illness/query/膝外侧韧带损伤">膝外侧韧带损伤</a></li>
+	</div>
+	<div id="erke1" onmouseover="hovering('erke1')" onmouseout = "move('erke1')" style="width: 300px;height: 500px;float: left;text-align: left;display: none;">
+		<li style="font-size: 20px;">耳鼻咽喉科常见疾病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/鼻炎">鼻炎</a> | <a href="/illness/query/窦炎">窦炎</a> | <a href="/illness/query/中耳炎">中耳炎</a> | <a href="/illness/query/三叉神经痛">三叉神经痛</a> | <a href="/illness/query/鼻咽癌">鼻咽癌</a> | <a href="/illness/query/鼻中隔偏曲">鼻中隔偏曲</a> | <a href="/illness/query/扁桃体炎">扁桃体炎</a>  | <a href="/illness/query/鼻息肉">鼻息肉</a> | <a href="/illness/query/声带息肉">声带息肉</a> | <a href="/illness/query/美尼尔综合症">美尼尔综合症</a> | <a href="/illness/query/急性鼻炎">急性鼻炎</a> | <a href="/illness/query/喉癌">喉癌</a> | <a href="/illness/query/鼓膜穿孔">鼓膜穿孔</a> | <a href="/illness/query/咽异感症">咽异感症</a> | <a href="/illness/query/慢性咽炎">慢性咽炎</a> | <a href="/illness/query/甲状腺结节">甲状腺结节</a> | <a href="/illness/query/中耳炎">中耳炎</a> | <a href="/illness/query/咽炎">咽炎</a> | <a href="/illness/query/咽喉癌">咽喉癌</a> | <a href="/illness/query/外耳道炎">外耳道炎</a> | <a href="/illness/query/慢性鼻炎">慢性鼻炎</a> | <a href="/illness/query/喉炎">喉炎</a> | <a href="/illness/query/声带小结">声带小结</a> | <a href="/illness/query/咽峡炎">咽峡炎</a> | <a href="/illness/query/分泌性中耳炎">分泌性中耳炎</a> | <a href="/illness/query/桥本氏病">桥本氏病</a> | <a href="/illness/query/梅尼埃病">梅尼埃病</a> | <a href="/illness/query/突发性耳聋">突发性耳聋</a> | <a href="/illness/query/空鼻症">空鼻症</a> | <a href="/illness/query/上颌窦炎">上颌窦炎</a> | <a href="/illness/query/会厌囊肿">会厌囊肿</a> | <a href="/illness/query/性扁桃体炎">慢性扁桃体炎</a></li><br/>
+		<li style="font-size: 20px;">眼科常见疾病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/白内障">白内障</a> | <a href="/illness/query/青光眼">青光眼</a> | <a href="/illness/query/近视">近视</a> | <a href="/illness/query/弱视">弱视</a> | <a href="/illness/query/结膜炎">结膜炎</a> | <a href="/illness/query/黄斑变性">黄斑变性</a> | <a href="/illness/query/玻璃体混浊">玻璃体混浊</a> | <a href="/illness/query/斜视">斜视</a> | <a href="/illness/query/角膜炎">角膜炎</a> | <a href="/illness/query/视网膜脱落">视网膜脱落</a> | <a href="/illness/query/散光">散光</a> | <a href="/illness/query/葡萄膜炎">葡萄膜炎</a> | <a href="/illness/query/睑腺炎">睑腺炎</a> | <a href="/illness/query/沙眼">沙眼</a> | <a href="/illness/query/视神经炎">视神经炎</a></li><br/>
+		<li style="font-size: 20px;">头颈外科常见疾病</li><br/>
+		<li style="font-size: 15px;"><a href="/illness/query/甲状腺癌">甲状腺癌</a> | <a href="/illness/query/腮腺炎">腮腺炎</a> | <a href="/illness/query/咽部肿瘤">咽部肿瘤</a> | <a href="/illness/query/颈动脉瘤">颈动脉瘤</a></li><br/>
+	</div>
+</div>
+<br><br>
+
+<div  style="width:100%;height: 500px;background-color: white;margin: auto;">
+	<div style="width: 1150px;height: 80px;background-color: white;margin: auto;line-height: 80px;">
+		<p style="font-size: 30px;font-family: 微软雅黑;">推荐医院</p>
+	</div><br><br>
+	<div id="history" style="width: 1150px;height: 50px;background-color: Lavender;margin: auto;line-height: 50px;">
+		<div id="selectHistory1" style="width: 100px;height: 50px;line-height: 50px;text-align: center;float: left;background-color: red;">
+			<p style="font-size: 20px;font-family: 微软雅黑;" onclick="selectHistory('1')">骨科</p>
+		</div>
+		<div id="selectHistory2" style="width: 100px;height: 50px;line-height: 50px;text-align: center;float: left;">
+			<p style="font-size: 20px;font-family: 微软雅黑;" onclick="selectHistory('2')">外科</p>
+		</div>
+		<div id="selectHistory3" style="width: 100px;height: 50px;line-height: 50px;text-align: center;float: left;">
+			<p style="font-size: 20px;font-family: 微软雅黑;" onclick="selectHistory('3')">内科</p>
+		</div>
+		<div id="selectHistory4" style="width: 100px;height: 50px;line-height: 50px;text-align: center;float: left;">
+			<p style="font-size: 20px;font-family: 微软雅黑;" onclick="selectHistory('4')">妇产科</p>
+		</div>
+		<div id="selectHistory5" style="width: 100px;height: 50px;line-height: 50px;text-align: center;float: left;">
+			<p style="font-size: 20px;font-family: 微软雅黑;" onclick="selectHistory('5')">皮肤性病科</p>
+		</div>
+	</div><br>
+
+	<!-- 推荐骨科医院-->
+	<div id="showHistory1" style="width: 1150px;height: 300px;margin: auto;">
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/11.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">重庆医科大学附属第一医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px;float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/15.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">重庆市东南医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/12.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">重庆曙光男科医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/13.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">重庆市人民医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">重庆医科大学 救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/14.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">重庆佳和医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- 推荐外科医院-->
+	<div id="showHistory2" style="width: 1150px;height: 300px;margin: auto;display: none;">
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/A.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">成都美容整形医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px;float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/B.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">成都永康医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/G.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">成都世纪眼科医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/13.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">解放军452医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/F.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">成都欧亚男科医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- 推荐内科医院-->
+	<div id="showHistory3" style="width: 1150px;height: 300px;margin: auto;display: none;">
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/I.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">北京协和医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px;float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/D.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">解放军总医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/J.jpeg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">首都医科大学附属北京中医医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/21.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">北京军区总医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/23.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">北京市公安医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+	</div>
+	<!-- 推荐妇产科医院-->
+
+	<div id="showHistory4" style="width: 1150px;height: 300px;margin: auto;display: none;">
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/A.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">上海德达医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px;float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/B.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">上海市黄浦区肿瘤防治院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/C.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">上海阿波罗男子医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/D.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">上海港医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/E.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">上海瑞金眼科中心</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- 推荐皮肤科医院-->
+
+	<div id="showHistory5" style="width: 1150px;height: 300px;margin: auto;display: none;">
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/F.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">广州海珠区妇科医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px;float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/G.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">广州南粤医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/H.png">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">广州医科大学附属第一医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;margin-right: 25px;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/I.jpg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">广州新时代医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+		<div style="width: 210px;height: 300px; float: left;">
+			<div style="width: 210px;height: 200px;overflow: hidden;">
+				<img src="/img/history/J.jpeg">
+			</div>
+			<div style="width: 210px;height: 100px;line-height: 60px;text-align: center;">
+				<p style="font-size: 15px;font-family: 微软雅黑;">广州花都时代妇产医院</p>
+				<p style="font-size: 15px;font-family: 微软雅黑;">救死扶伤</p>
+			</div>
+		</div>
+	</div>
+</div>
+<br><br>
+<!--疾病健康-->
+<div style="width: 1150px;height: 550px;margin: auto;" th:if="${list ne null}">
+	<div style="width: 1150px;height: 80px;background-color: white;margin: auto;line-height: 80px;">
+		<p style="font-size: 30px;font-family: 微软雅黑;">疾病健康</p>
+	</div><br><br>
+	<div style="width: 1150px;height: 210px;margin: auto;margin-bottom: 20px;">
+		<div style="width: 500px;height: 200px;margin: auto;float: left;">
+			<div style="width: 500px;height: 20px;margin-bottom: 10px;"><p style="font-size: 20px;font-family: 微软雅黑;">内科</p></div>
+			<div style="width: 500px;height: 80px;background-color: white;">
+				<div style="width: 80px;height: 80px;float: left;margin-right: 10px;overflow: hidden;">
+					<img src="/img/head/4.jpg"><!--图片-->
+				</div>
+				<div style="width: 410px;height: 80px;float: right;overflow: hidden;">
+					<p style="font-size: 15px;font-family: 宋体;"><a th:href="@{'/article/queryDetail/'+${list[0].id}}" target="_blank"  th:text="${list[0].title}"></a></p>
+					<p style="font-size: 10px;line-height: 15px;font-family: 宋体;color: gray;">D 维生素是人体不可或缺的营养素。美国《赫芬顿邮报》4 月 29 日载文，刊出波士顿大学医学教授迈克尔•霍里克博士总结出的「体内维生素 D 不足的 7 个信号」。1. 骨头疼痛缺乏维生素 D 的成年人更容易骨头疼痛缺乏维生素 D 的成年人更容易</p>
+				</div>
+			</div>
+			<div style="width: 500px;height: 90px;background-color: white;font-size: 15px;font-family:宋体 ;overflow: hidden;">
+				<p>健康科普 | <a th:href="@{'/article/queryDetail/'+${list[1].id}}" target="_blank" th:text="${list[1].title}"></a></p><br>
+				<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[2].id}}" target="_blank" th:text="${list[2].title}"></a></p><br>
+				<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[3].id}}" target="_blank" th:text="${list[3].title}"></a></p>
+
+			</div>
+		</div>
+		<div style="width: 500px;height: 200px;margin: auto;float: right;">
+			<div style="width: 500px;height: 20px;margin-bottom: 10px;"><p style="font-size: 20px;font-family: 微软雅黑;">外科</p></div>
+			<div style="width: 500px;height: 80px;background-color: white;">
+				<div style="width: 80px;height: 80px;float: left;margin-right: 10px;overflow: hidden;">
+					<img src="/img/head/1.jpg"><!--图片-->
+				</div>
+				<div style="width: 410px;height: 80px;float: right;overflow: hidden;">
+					<p style="font-size: 15px;font-family: 宋体;"><a th:href="@{'/article/queryDetail/'+${list[4].id}}" target="_blank" th:text="${list[4].title}"></a></p> <p style="font-size: 10px;line-height: 15px;font-family: 宋体;color: gray;">D 维生素是人体不可或缺的营养素。美国《赫芬顿邮报》4 月 29 日载文，刊出波士顿大学医学教授迈克尔•霍里克博士总结出的「体内维生素 D 不足的 7 个信号」。1. 骨头疼痛缺乏维生素 D 的成年人更容易骨头疼痛缺乏维生素 D 的成年人更容易</p>
+				</div>
+			</div>
+			<div style="width: 500px;height: 90px;background-color: white;font-size: 15px;font-family:宋体 ;overflow: hidden;">
+				<p>健康科普 | <a th:href="@{'/article/queryDetail/'+${list[5].id}}" target="_blank" th:text="${list[5].title}"></a></p><br>
+				<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[6].id}}" target="_blank" th:text="${list[6].title}"></a></p><br>
+				<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[7].id}}" target="_blank" th:text="${list[7].title}"></a></p>
+			</div>
+		</div>
+	</div>
+	<div style="width: 1150px;height: 210px;margin: auto;">
+		<div style="width: 1150px;height: 210px;margin: auto;margin-bottom: 20px;">
+			<div style="width: 500px;height: 200px;margin: auto;float: left;">
+				<div style="width: 500px;height: 20px;margin-bottom: 10px;"><p style="font-size: 20px;font-family: 微软雅黑;">妇科</p></div>
+				<div style="width: 500px;height: 80px;background-color: white;">
+					<div style="width: 80px;height: 80px;float: left;margin-right: 10px;overflow: hidden;">
+						<img src="/img/head/2.jpg"><!--图片-->
+					</div>
+					<div style="width: 410px;height: 80px;float: right;overflow: hidden;">
+						<p style="font-size: 15px;font-family: 宋体;"><a th:href="@{'/article/queryDetail/'+${list[8].id}}" target="_blank" th:text="${list[8].title}"></a></p> <p style="font-size: 10px;line-height: 15px;font-family: 宋体;color: gray;">D 维生素是人体不可或缺的营养素。美国《赫芬顿邮报》4 月 29 日载文，刊出波士顿大学医学教授迈克尔•霍里克博士总结出的「体内维生素 D 不足的 7 个信号」。1. 骨头疼痛缺乏维生素 D 的成年人更容易骨头疼痛缺乏维生素 D 的成年人更容易</p>
+					</div>
+				</div>
+				<div style="width: 500px;height: 90px;background-color: white;font-size: 15px;font-family:宋体 ;overflow: hidden;">
+					<p>健康科普 | <a th:href="@{'/article/queryDetail/'+${list[9].id}}" target="_blank" th:text="${list[9].title}"></a></p><br>
+					<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[10].id}}" target="_blank" th:text="${list[10].title}"></a></p><br>
+					<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[11].id}}" target="_blank" th:text="${list[11].title}"></a></p>
+
+				</div>
+			</div>
+			<div style="width: 500px;height: 200px;margin: auto;float: right;">
+				<div style="width: 500px;height: 20px;margin-bottom: 10px;"><p style="font-size: 20px;font-family: 微软雅黑;">儿科</p></div>
+				<div style="width: 500px;height: 80px;background-color: white;">
+					<div style="width: 80px;height: 80px;float: left;margin-right: 10px;overflow: hidden;">
+						<img src="/img/head/3.jpg"><!--图片-->
+					</div>
+					<div style="width: 410px;height: 80px;float: right;overflow: hidden;">
+						<p style="font-size: 15px;font-family: 宋体;"><a th:href="@{'/article/queryDetail/'+${list[12].id}}" target="_blank" th:text="${list[12].title}"></a></p>
+						<p style="font-size: 10px;line-height: 15px;font-family: 宋体;color: gray;">D 维生素是人体不可或缺的营养素。美国《赫芬顿邮报》4 月 29 日载文，刊出波士顿大学医学教授迈克尔•霍里克博士总结出的「体内维生素 D 不足的 7 个信号」。1. 骨头疼痛缺乏维生素 D 的成年人更容易骨头疼痛缺乏维生素 D 的成年人更容易4 月 29 日载文，刊出波士顿大学医学教授迈克尔•霍里克博士总结出的「体内维生素 D 不足的 7 个信号」。1. 骨头疼痛缺乏维生素 D 的成年人更容易骨头疼痛缺乏维生素 D 的成年人更容易</p>
+					</div>
+				</div>
+				<div style="width: 500px;height: 90px;background-color: white;font-size: 15px;font-family:宋体 ;overflow: hidden;">
+					<p>健康科普 | <a th:href="@{'/article/queryDetail/'+${list[13].id}}" target="_blank" th:text="${list[13].title}"></a></p><br>
+					<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[14].id}}" target="_blank" th:text="${list[14].title}"></a></p><br>
+					<p>病友论坛 | <a th:href="@{'/article/queryDetail/'+${list[15].id}}" target="_blank" th:text="${list[15].title}"></a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div><br><br><br><br><br><br><br><br><br>
+<!--font-->
+<div style="width: 1300px;height: 100px;margin: auto;line-height: 30px;font-size: 15px;color: gray;text-align: center;">
+
+	<p>关于我们 | 友情链接 | 版权声明 | 客服中心 | 联系我们</p>
+	<p>版权声明 | 作者编委 | 投稿邮箱 1225125821@qq.com</p>
+	<p>地址：中国-内江师范学院</p>
+</div>
+
+</body>
+
+</html>

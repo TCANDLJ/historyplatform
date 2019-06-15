@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.IllnessMapper">
+    <insert id="saveIllness">
+        INSERT INTO  illness(name,etiology,illness,kinds,create_time) VALUES
+        (#{name},#{etiology},#{illness},#{kinds},now())
+    </insert>
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT  count(1) FROM illness where
+        DATE(create_time) &lt;=#{endDate}
+        and DATE(create_time) >=#{startDate}
+        <if test="name != null">
+            and  name=#{name}
+        </if>
+    </select>
+    <select id="queryIllness" resultType="com._520it.pojo.Illness">
+        select t.id,  t.name,t.etiology,t.create_time createTime,t.illness ,
+        (select group_concat(kinds_name separator ',')  from kinds t1 where find_in_set(t1.id,t.kinds)) kinds
+        from illness t where
+        DATE(create_time) &lt;=#{illness.endDate}
+        and DATE(create_time) >=#{illness.startDate}
+        <if test="illness.name !=null">
+            and  name=#{illness.name}
+        </if>
+        ORDER BY t.create_time desc
+        limit #{startIndex},#{endIndex}
+    </select>
+    <select id="removeIllness">
+        delete from illness WHERE id=#{id}
+    </select>
+    <select id="editIllness" resultType="com._520it.pojo.Illness">
+        select
+        t.name,
+        t.id,
+        t.etiology,
+        t.illness,
+        t.kinds
+        FROM illness t WHERE t.id=#{id}
+    </select>
+    <select id="updateIllness">
+        UPDATE illness set name=#{name},etiology=#{etiology},illness=#{illness},kinds=#{kinds}  where id=#{id}
+    </select>
+    <select id="queryUserIllness" resultType="com._520it.pojo.Illness">
+          SELECT
+            t. NAME,
+            t.etiology,
+            t.illness,
+            t.kinds,
+            (
+                SELECT
+                    GROUP_CONCAT(t1.`name` SEPARATOR ',')
+                FROM
+                    history t1
+                WHERE
+                    find_in_set(t.kinds, t1.kingdom)
+            ) history
+        FROM
+            illness t
+        WHERE
+            t.`name`
+            like  concat(concat('%',#{name}),'%')
+        ORDER BY REPLACE( t.`name`,#{name},'') limit 3
+    </select>
+</mapper>

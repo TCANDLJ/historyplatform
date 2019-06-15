@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>人民医院公众服务平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="/css/slider.css">
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script th:inline="javascript">
+			function showDetail(){
+			   if($("#s1").css("overflow") == "hidden"){
+			   $("#s1").css("height","auto").css("overflow","visible");
+               $("#blick1").val("关闭更多<<");
+           }else{
+           	   $("#s1").css("height","100px").css("overflow","hidden");
+               $("#blick1").val("查看更多>>");
+           }
+			}
+            function showColor(a) {
+                $(".keshi div").css("background-color","Lavender");
+                $(a).parent().parent().css("background-color","#24A593");
+                $("#kinds").val($(a).attr("id"));
+            }
+</script>
+<style type="text/css">
+    *{padding:0;margin:0;}
+    body{
+    	background-color: 	Lavender;
+    }
+
+	li{
+				list-style: none;
+				font-family: 微软雅黑;
+				line-height: 50px;
+				font-size: 15px;
+				float: left;
+				 margin-right: 150px;
+		}
+
+	#fenye div:hover{
+       cursor: pointer;
+
+	}
+	.keshi p:hover{
+		background-color:  #24A593 ;
+		cursor: pointer;
+		border-radius: 8px;
+	}
+	
+</style>
+
+</head>
+<body>
+			<!--minhead-->
+
+			<div th:replace="minhead::minhead"></div>
+
+			<div class="header-middle" style="background-color: white;">
+			  <div class="header-search">
+			   <form th:action="@{/history/queryHistory}" th:method="post">
+				   <input type="hidden" id="startPage" name="startPage"/>
+				   <input id="kinds" type="hidden" name="kinds" th:value="${history ne null ?history.kinds:null}"/>
+				<div class="search" style="width: 450px;border: 1px solid Lavender ;">
+					<input type="search" th:value="${history ne null ?history.name:''}" placeholder="请输入医院名称,选择科室" name="name"  onblur="if (this.value.trim() == '') {this.value = null;}" required="">
+				</div>
+				<div  class="sear-sub">
+					<input type="submit" value="搜索">
+				</div>
+				<div class="clearfix"></div>
+			</form>
+	    	</div>
+	    	 <!-- 导航条-->
+           <div style="width: 1200px;height: 50px;background-color: white;margin: auto;" >
+              <li><a href="/">首页</a></li>
+              <li><a href="/online/queryOnlineDoctors">在线就诊</a></li>
+              <li><a href="/article/queryNews/0">健康科普</a></li>
+              <li><a href="/tribune.html" target="_blank">病友论坛</a></li>
+              <li><a href="/detail.html">就医推荐</a></li>
+           </div>
+	    	</div><br><br>
+	    	<div style="width: 1200px;height:auto;margin: auto;">
+	    	  <div style="width: 800px;height: 200px;background-color: white;margin: auto;float: left;margin-right: 20px;">
+	    	   <div style="width: 100px;height: 50px;line-height: 50px;text-align: center;">
+		       	<p style="font-size: 20px;font-family: 微软雅黑;color:#24A593;">科室</p>
+		       </div>
+               <div class="keshi" style="width: 800px;height: 150px;line-height: 50px;">
+               	  <div style="width: 100px;height: 40px;background-color: #24A593 ;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;border-radius:8px;"><a onclick="showColor(this)">不限</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="1">皮肤性病科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="2">消化内科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="3">内分泌科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="4">呼吸内科</a></p>
+               	  </div><br>
+               	  <div style="width: 100px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="5">妇产科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="6">眼科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="7">肝胆胰腺外科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="8">风湿免疫科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="9">泌尿外科</a></p>
+               	  </div><br>
+               	  <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="10">普通内科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="11">普外科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="12">儿科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="13">神经内科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" id="14">其他</a></p>
+               	  </div>
+               </div><br><br>
+			  <div style="width: 800px;height: 400px;background-color: white;margin: auto;margin-right: 20px;" th:if="${result ne null}">
+	    	     <div style="width: 100px;height: 50px;line-height: 50px;text-align: center;">
+		         	<p style="font-size: 20px;font-family: 微软雅黑;color:#24A593;">科室专家</p>
+		         </div>
+				  <div th:each="kindsUser:${result.list}" style="width: 200px;height:300px;margin-right: 33px;margin-left:33px;float: left;">
+					  <div style="width: 200px;height: 200px;border-radius: 50%;overflow: hidden;margin-bottom: 30px;">
+						  <img th:src="'http://localhost:8080'+${kindsUser.src}"><!--专家头像-->
+					  </div>
+					  <div style="width: 200px;height: 100px;line-height:20px ;text-align: center;overflow: hidden;">
+						  <p style="font-size: 10px;font-family: 微软雅黑;" th:text="${kindsUser.name}"></p>
+						  <p style="font-size: 10px;font-family: 微软雅黑;" th:text="${kindsUser.job}"></p>
+					  </div>
+				  </div>
+
+		       </div>
+				  <div  id="fenye" style="width: 800px;height: 30px;" th:if="${result ne null}">
+					  <div id="prev" style="width: 40px;height: 40px;border: 1px solid black;border-radius: 50%;float: left;margin-left: 285px;margin-right: 100px;text-align: center;line-height: 40px;background-color: #24A593"  th:if="${result.startPage > 1}" th:onclick="'queryHistorys('+${result.startPage -1}+');'"> <span style="font-size: 10px;font-family: 微软雅黑;">上一页</span></div>
+
+					  <div  style="width: 40px;height: 40px;border-radius: 50%;float: left;margin-left: 285px;margin-right: 100px;text-align: center;line-height: 40px;"  th:if="${result.startPage <= 1}" > <span style="font-size: 10px;font-family: 微软雅黑;"></span></div>
+
+					  <div id="cur" style="width: 40px;height: 40px;border-radius: 50%;float: left;margin-right: 100px;text-align: center;line-height: 40px;"> </div>
+
+					  <div id="next" style="width: 40px;height: 40px;border: 1px solid black;border-radius: 50%;float: left;text-align: center;line-height: 40px;background-color: #24A593" th:if="${result.startPage lt result.totalPage}" th:onclick="'queryHistorys('+${result.startPage +1}+');'"> <span style="font-size: 10px;font-family: 微软雅黑;">下一页</span></div>
+				  </div>
+				  <br><br>
+
+               <!--医院简介-->
+				<div  style="width: 800px;background-color: white;margin: auto;">
+
+	    		 <div style="width: 100px;height: 50px;line-height: 50px;text-align: center;">
+		        	<p style="font-size: 20px;font-family: 微软雅黑;color:#24A593;">医院简介</p>
+		       </div>
+	    		
+                <div id="s1" style="width: 800px;height: 100px;overflow: hidden;">
+                    <p style="font-family: 微软雅黑;font-size: 15px;line-height: 20px;color:#24A593;" th:text="'&nbsp;&nbsp;'+${history ne null ?history.name:''}"></p>
+                	<p style="font-family: 微软雅黑;font-size: 15px;line-height: 20px;" th:text="'&nbsp;&nbsp;&nbsp;&nbsp;'+${history ne null ?history.description:''}"></p>
+                </div>
+                 <div id="b1" style="width: 100px;height: 20px;position: relative;left: 700px;top:0px;color: white;">
+                   <input style="background-color:#24A593 " id="blick1" type="button" value="查看更多>>" onclick="showDetail()"/>
+                  </div>
+                </div>
+			</div>
+			<!--医院详情介绍-->
+			<div style="width: 380px;height: 800px;margin: auto;float: right;background-color: white;line-height: 25px;">
+				<div style="width: 360px;height: 50px;line-height: 50px;position: relative;left: 20px;">
+					<p style="font-family: 微软雅黑;font-size: 20px;" th:text="${history ne null ?history.name:null}"></p>
+				</div>
+				<div style="width: 360px;height: 200px;overflow: hidden;">
+				   <img  th:src="'http://localhost:8080'+${history ne null?history.pictureSrc:''}"><!--医院截图-->
+				</div><br><br>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;" th:text="'&nbsp;&nbsp;&nbsp;&nbsp;详细地址：'+${history ne null ?history.address:''}"></p>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;" th:text="'&nbsp;&nbsp;&nbsp;&nbsp;电话：'+${history ne null ?history.phone:''}"></p>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;就诊须知</p>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;" >&nbsp;&nbsp;&nbsp;&nbsp;就诊携带</p>
+				<p style="font-family: 微软雅黑;font-size: 10px;color:#24A593;">&nbsp;&nbsp;&nbsp;&nbsp;身份证，社保卡（医保卡），就诊卡（如果有），病例本，过往病例，过往检查单</p>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;就诊流程</p>
+				<p style="font-family: 微软雅黑;font-size: 10px;color:#24A593;">&nbsp;&nbsp;&nbsp;&nbsp;门诊导诊，挂号（可网上、电话预约，请提前半小时到门诊取号）按医院指示到对应诊室候诊就诊</p>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;门诊检查</p>
+				<p style="font-family: 微软雅黑;font-size: 10px;color:#24A593;">&nbsp;&nbsp;&nbsp;&nbsp;医生开具检查单后，先缴费，排队检查，出结果后回门诊看医生</p>
+				<p style="font-family: 微软雅黑;font-size: 15px;color:#24A593;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;打针/取药</p>
+				<p style="font-family: 微软雅黑;font-size: 10px;color:#24A593;">&nbsp;&nbsp;&nbsp;&nbsp;医生开具处方后，先缴费，携带缴费凭条到注射室打针/药房取药</p>
+				<p style="font-family: 微软雅黑;font-size: 10px;color:red;">&nbsp;&nbsp;&nbsp;&nbsp;以上信息有可能有变化，一切依实际医院信息为准</p>
+			</div>
+	    	</div>
+</body>
+<script th:inline="javascript">
+    $(".keshi div").css("background-color","Lavender");
+    $("#"+[[${history.kinds}]]).parent().parent().css("background-color","#24A593");
+    function  queryHistorys(a) {
+        $("#startPage").val(a);
+        $("form").submit();
+    };
+</script>
+</html>

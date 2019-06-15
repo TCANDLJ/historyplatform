@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="historyplatform-adminserver" />
+        <module name="HistoryPlatform-api" />
+        <module name="HistoryPlatform-userserver" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="HistoryPlatform-adminserver" target="1.8" />
+      <module name="historyplatform-adminserver" target="1.8" />
+      <module name="HistoryPlatform-api" target="1.5" />
+      <module name="HistoryPlatform-userserver" target="1.8" />
+      <module name="HistoryPlatforms" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

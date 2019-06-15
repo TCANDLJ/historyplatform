@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>人民医院公众服务平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<link href="/css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="/css/slider.css">
+<link href="/assets/css/bootstrap.css" rel="stylesheet">
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				
+			});
+      
+</script>
+<style type="text/css">
+    *{padding:0;margin:0;}
+    body{
+    	background-color: 	Lavender;
+    }
+
+	li{
+				list-style: none;
+				font-family: 微软雅黑;
+				line-height: 50px;
+				font-size: 15px;
+				float: left;
+				margin-right: 100px;
+		}
+    #read:hover {
+      cursor:pointer;
+    }
+	
+	
+</style>
+
+</head>
+<body>
+			<!-- 文章-->
+      <div style="width: 1000px;height: auto;overflow: auto;margin: auto;background-color: white;">
+        <!--左边，作者相关介绍-->
+         <div style="width: 300px;height: auto;float: left;background-color:Lavender; ">
+
+           <div style="width:300px;height: 100px;background-color: white;">
+              <div style="width:80px;height: 80px;background-color: blue;float: left;margin-left: 20px;margin-right: 10px;border-radius: 50% ;overflow: hidden;margin-top: 10px;">
+                <img th:src="${articleDetail.headPicture}"><!--作者头像-->
+              </div>
+              <div style="width: 180px;height: 80px;line-height: 100px;float: left;margin-top: 10px;">
+                 <p  style="font-family: 微软雅黑;font-size: 15px;font-weight: bold;" th:text="${articleDetail.authorName}">作者名称</p>
+              </div>
+           </div>
+
+           <div style="width: 300px;height: 80px;background-color: white;margin-top: 2px;">
+             <div style="width: 75px;height: 80px;float: left;text-align: center;line-height: 40px;">
+               <p style="font-size: 20px;font-family: 华文新魏;">作品<br><strong th:text="${articleDetail.articles}">44</strong></p>
+
+             </div>
+             <div style="width: 75px;height: 80px;float: left;text-align: center;line-height: 40px;">
+               <p style="font-size: 20px;font-family: 华文新魏;">粉丝<br><strong th:text="${articleDetail.stars}">44</strong></p>
+
+             </div>
+             <div style="width: 75px;height: 80px;float: left;text-align: center;line-height: 40px;">
+               <p style="font-size: 20px;font-family: 华文新魏;">评论<br><strong th:text="${articleDetail.comment}">44</strong></p>
+
+             </div>
+             <div style="width: 75px;height: 80px;float: left;text-align: center;line-height: 40px;">
+               <p style="font-size: 20px;font-family: 华文新魏;">喜欢<br><strong th:text="${articleDetail.likes}">44</strong></p>
+
+             </div>
+           </div>
+
+           <div style="width: 300px;height: 80px;background-color: white;margin-top: 2px;">
+              <div style="width:150px;height: 80px;float: left;text-align: center;line-height: 40px;">
+                  <p style="font-size: 15px;font-family: 华文新魏;" th:if="${articleDetail.type eq '1'}">普通会员</p>
+                  <p style="font-size: 15px;font-family: 华文新魏;" th:if="${articleDetail.type eq '2'}">高级会员</p>
+                  <p style="font-size: 15px;font-family: 华文新魏;" th:if="${articleDetail.type eq '3'}">医师会员</p>
+                  <p style="font-size: 15px;font-family: 华文新魏;" th:if="${articleDetail.type eq '4'}">管理员员</p>
+                <p style="font-size: 15px;font-family: 华文新魏;" th:text="'积分：'+${articleDetail.score}"></p>
+              </div>
+               <div style="width:150px;height: 80px;float: left;text-align: center;line-height: 40px;">
+                <p style="font-size: 15px;font-family: 华文新魏;" th:text="'排名：'+${articleDetail.rank}"></p>
+                <p style="font-size: 15px;font-family: 华文新魏;" th:text="'访问量：'+${articleDetail.reads}"></p>
+              </div>
+           </div>
+         </div>
+         <!--文章内容-->
+         <div style="width: 600px;height: auto;margin-left: 100px;float: left;">
+             <div style="width: 600px;height: 100px;background-color: white;border-bottom-style: solid;border-bottom-width: 2px;line-height: 40px;text-align: left;border-bottom-color:Lavender; ">
+                <h1 style="font-weight: bold;font-family:微软雅黑; " th:text="${articleDetail.title}"></h1><!--最多30个字的标题-->
+             </div>
+             <div th:utext="${articleDetail.content}" id="readMore" style="width: 600px;height:auto;line-height: 20px;text-align: left;overflow: hidden;background-color: white;">
+
+             </div>
+         </div>
+      </div>
+	    	<br><br><br><br><br><br><br>
+	    		<!--font-->
+        <div style="width: 1000px;height: 100px;margin: auto;line-height: 30px;font-size: 15px;color: gray;text-align: center;">
+             <p>关于我们 | 友情链接 | 版权声明 | 客服中心 | 联系我们</p>
+             <p>版权声明 | 作者编委 | 投稿邮箱 1225125821@qq.com</p>
+             <p>地址：中国-内江师范学院</p>
+        </div>
+</body>
+</html>

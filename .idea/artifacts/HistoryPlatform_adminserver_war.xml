@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="HistoryPlatform-adminserver:war">
+    <output-path>$PROJECT_DIR$/HistoryPlatform-adminserver/target</output-path>
+    <root id="archive" name="historyplatform-adminserver-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="HistoryPlatform-adminserver:war exploded" />
+    </root>
+  </artifact>
+</component>

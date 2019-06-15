@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.UserMapper">
+
+    <insert id="save">
+        INSERT INTO user(`name`,`password`,`type`,`score`,`picture_src`,`create_time`) VALUES (#{name},#{password},#{type},#{score},#{pictureSrc},now());
+    </insert>
+    <select id="getUserByname" resultType="java.lang.Integer">
+        select count(1) from user t where  t.name=#{name}
+    </select>
+    <select id="getUser" resultType="com._520it.pojo.User">
+        select t.name name,t.type type,t.score score,t.picture_src pictureSrc,t.follower_num followerNum,t.password password,t.id id  from user t
+        where  t.name=#{name} AND t.password=#{password}
+        AND  t.type IN (1,2,3,5)
+    </select>
+    <update id="updataPW">
+        UPDATE    user t SET t.password=#{newPW}  WHERE  t.id=#{id}
+    </update>
+    
+    <select id="getAdmin" resultType="com._520it.pojo.User">
+        select t.name name,t.picture_src pictureSrc,t.id id,t.phone,t.email,t.password  from user t where  t.name=#{name} AND t.password=#{password} AND  t.type=4
+    </select>
+    
+    <select id="countAricles" resultType="com._520it.pojo.Count">
+        select
+        sum(if((status=4),1,0)) count1,
+        sum(if((status in(2,3)  AND adminId=#{id}),1,0)) count2,
+        sum(if((status=2 AND adminId=#{id}),1,0)) count3,
+        sum(if((status=3 AND adminId=#{id}),1,0)) count4
+        from article
+    </select>
+    
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT  count(1) FROM user where
+        type=#{type}
+        AND DATE(create_time) &lt;=#{endDate}
+        and DATE(create_time) >=#{startDate}
+    </select>
+
+    <select id="queryUsers" resultType="com._520it.pojo.User">
+        select t.id,  t.name,t.type,t.create_time createTime,t.score,t.follower_num followerNum,
+        (select count(1) from article where  userid=t.id) articles
+        from user t where t.type=#{user.type}
+        AND DATE(create_time) &lt;=#{user.endDate}
+        and DATE(create_time) >=#{user.startDate}
+        ORDER BY t.create_time desc
+        limit #{startIndex},#{endIndex}
+    </select>
+    <delete id="deleteArticle">
+        delete from article where userid=#{id}
+    </delete>
+    <delete id="deleteUser">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+    <update id="updatescore">
+        UPDATE user t  set t.score=IFNULL(score,0)+#{score}  where t.id=#{id}
+    </update>
+
+    <update id="updateType">
+      update   user t  set
+      <if test="score >= 500 and score &lt; 1000">
+         t.type=2
+      </if>
+        <if test="score >= 1000">
+            t.type=3
+        </if>
+      WHERE t.id=#{id} AND t.type in (1,2,3)
+    </update>
+    <update id="updateStatus">
+        UPDATE  user t set   t.status=#{status} WHERE t.id=#{id}
+    </update>
+    <update id="updatePicture">
+        UPDATE  user t set t.picture_src=#{src}  where t.id=#{id}
+    </update>
+</mapper>

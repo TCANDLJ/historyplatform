@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>人民医院公众服务平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="/css/slider.css">
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				
+			});
+			function  onlineChat(a) {
+            if (a ==1) {
+                window.location.href = "http://localhost/online/joinOnlineChat";
+            }
+            return;
+			}
+</script>
+<style type="text/css">
+    *{padding:0;margin:0;}
+    body{
+    	background-color: 	Lavender;
+    }
+
+	li{
+				list-style: none;
+				font-family: 微软雅黑;
+				line-height: 50px;
+				font-size: 15px;
+				float: left;
+				margin-right: 100px;
+        
+		}
+    li a{
+       color: #24A593;
+    }
+    #online:hover{
+      cursor: pointer;
+
+    }
+	
+</style>
+
+</head>
+<body>
+			<!--minhead-->
+            <div th:replace="minhead::minhead"></div>
+            <!--标题-->
+      <div style="width: 1000px;height: 50px;margin: auto;line-height: 50px;text-align: center;margin-bottom: 20px;">
+           <p style="font-size: 40px;font-family: 微软雅黑;font-weight: bold;color: #24A593;">在线诊断</p>
+      </div>
+
+			<!-- 导航条-->
+      <div style="width: 1000px;height: 50px;background-color: white;margin: auto;" >
+              <li><a href="/">首页</a></li>
+              <li><a href="/article/queryNews/0">健康科普</a></li>
+              <li><a href="/history/queryHistory">全国医院</a></li>
+              <li><a href="/detail.html">就医推荐</a></li>
+              <li><a href="/tribune.html" target="_blank">病友论坛</a></li>
+      </div><br><br>
+
+      <!--展示在线医生-->
+      <div id="online"  style="width: 1000px;margin: auto;overflow: auto;">
+          <div style="width: 200px;height: 380px;float: left;margin-right: 66px;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/1.jpg);" th:onclick="'javascript:onlineChat('+${result[0].status}+')'" ></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[0].name+'  '+(result[0].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[0].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+       <div style="width: 200px;height: 380px;float: left;margin-right: 66px;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/8.jpg);" th:onclick="'javascript:onlineChat('+${result[1].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[1].name+'  '+(result[1].status ==1?'在线':'离线')):''}"> </p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[1].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+          <div style="width: 200px;height: 380px;float: left;margin-right: 66px;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/7.jpg)" th:onclick="'javascript:onlineChat('+${result[2].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[2].name+'  '+(result[2].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[2].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+          <div style="width: 200px;height: 380px;float: left;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/6.jpg)" th:onclick="'javascript:onlineChat('+${result[3].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[3].name+'  '+(result[3].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[3].kinds:'救死扶伤'}"></p>
+             </div>
+          </div><br><br>
+<div style="width: 200px;height: 380px;float: left;margin-right: 66px;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/5.jpg)" th:onclick="'javascript:onlineChat('+${result[4].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[4].name+'  '+(result[4].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[4].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+       <div style="width: 200px;height: 380px;float: left;margin-right: 66px;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/4.jpeg)" th:onclick="'javascript:onlineChat('+${result[5].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[5].name+'  '+(result[5].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[5].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+          <div style="width: 200px;height: 380px;float: left;margin-right: 66px;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/3.jpg)" th:onclick="'javascript:onlineChat('+${result[6].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[6].name+'  '+(result[6].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[6].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+          <div style="width: 200px;height: 380px;float: left;">
+             <div style="width: 200px;height: 300px;overflow: hidden;background-image: url(/img/online/2.jpg)" th:onclick="'javascript:onlineChat('+${result[7].status}+')'"></div>
+             <div style="width: 200px;height: 80px;text-align: center;line-height: 30px;"> 
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?(result[7].name+'  '+(result[7].status ==1?'在线':'离线')):''}"></p>
+                <p style="color: white;font-size: 10px;font-family: 华文新魏;color: #24A593" th:text="${result !=null?result[7].kinds:'救死扶伤'}"></p>
+             </div>
+          </div>
+      </div>
+	    	<br><br><br><br><br><br><br>
+	    		<!--font-->
+        <div style="width: 1000px;height: 100px;margin: auto;line-height: 30px;font-size: 15px;color: gray;text-align: center;">
+             <p>关于我们 | 友情链接 | 版权声明 | 客服中心 | 联系我们</p>
+             <p>版权声明 | 作者编委 | 投稿邮箱 1225125821@qq.com</p>
+             <p>地址：中国-内江师范学院</p>
+        </div>
+</body>
+</html>

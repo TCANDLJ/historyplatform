@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.PictureMapper">
+    <insert id="savePicture">
+
+       <if test="type ==4">
+           INSERT INTO picture(name,job,historyName,kinds,src,create_time,type)
+           VALUES (#{doctorName},#{doctorJob},#{historyVal},#{kinds},#{src},now(),#{type})
+       </if>
+       <if test="type ==1 || type==2">
+           INSERT INTO picture(type,src,create_time)
+           VALUES (#{type},#{src},now())
+       </if>
+        <if test="type ==3">
+            INSERT INTO picture(historyName,src,create_time,type)
+            VALUES (#{historyVal},#{src},now(),#{type})
+        </if>
+    </insert>
+    <select id="queryPicture" resultType="java.lang.Integer">
+
+        <if test="type ==4">
+            select count(1) from picture t where
+            t.NAME =#{doctorName} AND t.job=#{doctorJob} AND t.historyName=#{historyVal} AND  t.kinds=#{kinds}
+            AND  t.type=#{type}
+        </if>
+        <if test="type ==1 || type==2">
+            select count(1) from picture t where  t.type=#{type}
+        </if>
+        <if test="type ==3">
+            select count(1) from picture t where t.historyName=#{historyVal} AND  t.type=#{type}
+        </if>
+    </select>
+    <update id="updatePicture">
+        <if test="type ==4">
+            update  picture t set  t.src=#{src}
+            where
+            t.NAME =#{doctorName} AND t.job=#{doctorJob} AND t.historyName=#{historyVal} AND  t.kinds=#{kinds}
+            AND  t.type=#{type}
+        </if>
+        <if test="type ==1 || type==2">
+            update  picture t set t.src=#{src} where  t.type=#{type}
+        </if>
+        <if test="type ==3">
+            update picture t set  t.src=#{src} where t.historyName=#{historyVal} AND  t.type=#{type}
+        </if>
+    </update>
+
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT  count(1) FROM picture where
+        type=#{type} and
+        DATE(create_time) &lt;=#{endDate}
+        and DATE(create_time) >=#{startDate}
+
+    </select>
+    <select id="queryPictures" resultType="com._520it.pojo.Picture">
+        select t.id,  t.name doctorName,t.job doctorJob,t.create_time createTime,t.historyName historyVal ,
+        (select kinds_name from kinds where id=t.kinds) kinds,t.type,t.src
+        from picture t where
+        t.type=#{picture.type} and
+        DATE(create_time) &lt;=#{picture.endDate}
+        and DATE(create_time) >=#{picture.startDate}
+        ORDER BY t.historyName desc,kinds desc,t.create_time desc
+        limit #{startIndex},#{endIndex}
+    </select>
+    <select id="removePicture">
+        delete from picture WHERE id=#{id}
+    </select>
+</mapper>

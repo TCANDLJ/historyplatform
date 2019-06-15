@@ -1,0 +1,208 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>人民医院在线服务平台</title>
+	<meta charset="utf-8">
+		<script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+	<style type="text/css">
+		/*CSS标签样式的写法，直接写标签名*/
+		body{
+			background:url("/images/1.jpg") no-repeat;
+			background-size:cover;
+		}
+		/* CSS的第二种指定方法，类 class="box"  .box*/
+		.box{
+			width: 700px;
+			height: 600px;
+			background: #fff;
+			margin: 80px auto;
+			box-shadow: 0px 0px 5px #000;
+			border-radius: 10px;
+		}
+		.header{
+			height: 60px;
+			background: #0066ff;
+			border-radius: 5px;
+			position:relative;
+		}
+		.header .logo{
+			width: 400px;
+			height: 88px;
+			position: absolute;
+			bottom: 0px;
+		}
+		.header .hide{
+			width: 30px;
+			height: 30px;
+			border: 1px solid #fff;
+			font-size: 16px;
+			float: right;
+			text-align: center;
+			line-height: 30px;
+			border-radius: 50%;
+			color: #fff;
+			box-shadow: 0px 0px 5px #000;
+			margin: 10px;
+			cursor: pointer;
+		}
+		.header .hide:hover{
+			width: 35px;
+			height: 35px;
+			font-size: 17px;
+			line-height: 35px;
+		}
+		.center{
+			height: 400px;
+			background: #fff;
+			padding: 10px;
+			overflow: auto;
+		}
+		.send{
+			height:120px;
+		}
+		/*指定ID=sendcONTENT的元素样式*/
+		#sendContent{
+			width: 690px;
+			height: 70px;
+			border: 1px solid gray;
+			border-top: 1px solid #ddd;
+			outline: medium;
+		}
+		.bottom{
+			height: 50px;
+			cursor: pointer;
+		}
+		.bottom span{
+			text-decoration:underline;
+			font:14px/40px 微软雅黑;
+		}
+		button{
+			float: right;
+			margin-right: 20px;
+			width: 100px;
+			height: 32px;
+			font-size: 17px;
+			background: #0066ff;
+			border-radius: 5px;
+			border: none;
+			color: #fff;
+			cursor: pointer;
+			box-shadow: 0px 0px 5px #000;
+		}
+		button:hover{
+			box-shadow: 0px 0px 10px 3px #000;
+		}
+		.left{
+			width: 100%;
+			text-align: center;
+		}
+		.right{
+			/*float: right;*/
+			text-align: center;
+			width:100%;
+		}
+		.right img{
+			border-radius: 50%;
+		}
+
+		#confirmDiv div:hover{
+			cursor: pointer;
+			color: red;
+		}
+	</style>
+	<script>
+        $(document).ready(function () {
+            $(".hide").click(function (){
+                $("#myConfirm").show();
+                $("#sendContent,button").attr("disabled","true");
+            });
+            var urlPrefix = "ws://localhost/chat-room/";
+            var   ws =null;
+            //加入聊天室
+            var username = $('#username').val();
+            //这一步，会调用服务端的@OnOpen注解标注的方法
+            var   ws = new WebSocket(urlPrefix + username);
+            ws.onmessage = function (event) {
+                //接收服务端返回给前端的消息
+                var center = $(".center");
+                var  tmp = "<span>"+event.data+"</span>";
+                var html="<div class='left'><span class='msg'>"+tmp+"</span></div>";
+                center.append(html);
+                center.scrollTop(center[0].scrollHeight);
+            };
+            ws.onclose = function () {
+                /**
+                 * 问题：为什么这里不是接收服务端的提示信息，而是当前用户自己定义消息？
+                 * 原因：当用户离开聊天室时，在遍历存活用户时，当前用户已经不在存活用户集合中，
+                 *       所以当前用户的提示信息不能由服务端发送，而得由自己去定义！
+                 */
+                    // $('#text_chat_content').append("用户【" + username +"】离开聊天室！" + "\n");
+                var center = $(".center");
+                var html = "<div class='right'><span class='msg'>用户"+username+"离开聊天室！</span></div>";
+                center.append(html);
+                center.scrollTop(center[0].scrollHeight);
+            };
+            //发送消息
+            $('button').click(function () {
+                if (ws){
+                    var content = $("#sendContent").val();
+                    $("#sendContent").val("");
+                    ws.send(content);
+                }
+            });
+            //离开聊天室
+            $('#leafOnline').click(function () {
+				window.location.href="http://localhost/";
+            });
+            $('#joinOnline').click(function () {
+                if (ws){
+                    $("#myConfirm").css("display","none");
+                    $("#sendContent,button").removeAttr("disabled");
+                }
+            });
+        });
+	</script>
+</head>
+<body>
+<input type="hidden" id="username" name="username" th:value="${session.user.name}"/>
+<!--窗体面板 START-->
+<DIV class="box">
+	<!--对话框的头部 START-->
+	<DIV class="header">
+		<div class="logo"></div>
+		<div class="hide">X</div>
+	</DIV>
+	<!--对话框的头部 END-->
+	<!--聊天内容 START-->
+	<DIV class='center'>
+		<div class='right'>
+			<img width="50" height="50" src='/images/james.jpg'/>
+		</div>
+	</DIV>
+	<!--聊天内容 END-->
+	<!--底部区域 START-->
+	<DIV class="send">
+		<input type="text" id="sendContent" placeholder="请开始你的表演……"/>
+		<div class="bottom">
+			<button>发送</button>
+		</div>
+	</DIV>
+	<!--底部区域 END-->
+</DIV>
+<div id="myConfirm" style="width: 250px;height: 120px;background-color: gray;position: absolute;top: 300px;left: 500px;display: none;opacity: 0.6;">
+	<div style="width: 250px;height: 40px;background-color: #72D1FF;line-height: 40px;text-align: center;">
+		<span style="color: white;font-size: 15px;font-family: 华文新魏;">性感客服在线提示</span>
+	</div>
+	<div style="width: 250px;height: 40px;line-height: 40px;text-align: center;">
+		<span style="color:#72D1FF ;font-size: 15px;font-family: 华文新魏;">确定退出本次对话吗？</span>
+	</div>
+	<div id="confirmDiv" style="width: 250px;height: 40px;line-height: 40px;text-align: center;" >
+		<div id="leafOnline" style="width: 50px;height: 25px;line-height: 25px;text-align: center;border-radius: 10%;background-color:#72D1FF;float: left;margin-left:50px; " >
+			确认
+		</div>
+		<div id="joinOnline" style="width: 50px;height: 25px;line-height: 25px;border-radius: 10%;background-color:#72D1FF;float: right;margin-right: 50px; ">
+			取消
+		</div>
+	</div>
+</div>
+</body>
+</html>

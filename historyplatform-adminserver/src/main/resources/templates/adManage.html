@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <title>admin 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script" rel="stylesheet" type="text/css">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/assets/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/admin.css" rel="stylesheet">
+	<link href="/layui/css/layui.css">
+	<script src="/laydate/laydate.js"></script>
+   <script type="text/javascript">
+   	
+   	laydate.render({
+  elem: '#test1'
+});
+laydate.render({
+  elem: '#test2'
+});
+   </script>
+	<style type="text/css">
+		#fenye a:hover{
+			cursor: pointer;
+		}
+	</style>
+</head>    
+<body>
+
+<div class="container">
+	<div class="row">
+		<div th:replace="head::minHead"></div>
+	<div class="span10">
+		
+	<div class="secondary-masthead">
+    	<ul class="nav nav-pills pull-right">
+			<li>
+				<a href="/index/loginout"><i class="icon-globe"></i> Logout</a>
+			</li>
+		</ul>
+
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">Admin</a> <span class="divider">/</span>
+			</li>
+			<li class="active">图片管理</li>
+		</ul>
+		
+	</div>
+	
+	<div class="main-area dashboard">
+				<div class="row">
+
+				<div class="span10">
+
+					<div class="slate">
+
+						<form  th:action="@{/admin/picture/queryPictures}" th:method="post">
+							<input type="hidden" th:id="startpage" name="startPage" th:value="${picture !=null?picture.startPage:null}"/>
+							<div style="width: 80px;float: left;text-align: center;line-height: 40px;"><p>图片类型</p></div>
+					     	 <div style="width: 100px;float: left;text-align: center;line-height: 40px;">
+					     	 	<select style="width: 100px;" name="type">
+					  	 			 <option th:selected="${picture !=null && picture.type=='1'}" th:value="1">大广告</option>
+									 <option th:selected="${picture !=null && picture.type=='2'}" th:value="2">小广告</option>
+									 <option th:selected="${picture !=null && picture.type=='3'}" th:value="3">医院图片</option>
+									 <option th:selected="${picture !=null && picture.type=='4'}" th:value="4">科室医生</option>
+					  	 		</select>
+					     	 </div>
+							<div style="width: 80px;float: left;text-align: center;line-height: 40px;">
+                                    <p>上传时间：</p>
+                             </div>
+			                <div style="float: left;text-align: center;line-height: 40px;margin-right: 20px;">
+			                   <input name="startDate" th:value="${picture ne null?picture.startDate:null}" type="text" class="demo-input" placeholder="请选择日期至" id="test1" width="80px">
+			                </div>
+			                <div style="float: left;text-align: center;line-height: 40px;margin-right: 20px;">
+			                   <input name="endDate" th:value="${picture ne null?picture.endDate:null}" type="text" class="demo-input" placeholder="请选择日期" id="test2" width="80px">
+			                </div>
+							<button type="button" onclick="submitQuery()" class="btn btn-primary">查询</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span10">
+					<div class="slate">
+						<table class="orders-table table">
+						<thead>
+							<tr>
+								<th>图片类型</th>
+								<th>医院名称</th>
+								<th>科室医生</th>
+								<th>医生职务</th>
+								<th>科室</th>
+								<th>上传时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody th:if="${result ne null}">
+							<tr th:each="picture:${result.list}">
+								<td th:if="${picture.type =='1'}" th:text="大广告">
+                            </td>
+                            <td th:if="${picture.type =='2'}" th:text="小广告" >
+                            </td>
+                            <td th:if="${picture.type =='3'}" th:text="医院图片">
+                            </td>
+                            <td th:if="${picture.type =='4'}" th:text="科室医生">
+                            </td>
+								<td th:text="${picture.historyVal}"></td>
+								<td th:text="${picture.doctorName}"></td>
+								<td th:text="${picture.doctorJob}"></td>
+								<td th:text="${picture.kinds}"></td>
+								<td th:text="${picture.createTime}"></td>
+								<td>
+									<a class="btn btn-small btn-danger" data-toggle="modal" th:href="'javascript:removePicture('+${picture.id}+');'">删除</a>
+                                <a class="btn btn-small btn-danger" th:href="@{'/admin/picture/download'+${picture.src}}">下载</a>
+                            </td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+				<!--分页-->
+				<div class="span5">
+					<div  class="pagination pull-left" th:if="${result ne null}">
+						<ul th:id="fenye">
+							<li th:if="${result.startPage > 1}"><a th:onclick="'queryPictures('+${result.startPage -1}+');'">Prev</a></li>
+							<li class="active">
+								<a href="#" th:text="${result.startPage}"></a>
+							</li>
+							<li th:if="${result.startPage lt result.totalPage}"><a th:onclick="'queryPictures('+${result.startPage +1}+');'">Next</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	</div>
+	
+	</div> 
+		
+	</div>
+</div> 
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript">
+    //删除
+    function removePicture(id) {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            layer.confirm('确定是否删除该疾病信息?', {icon: 3, title:'友情提示'}, function(index){
+                $.ajax({
+                    url:"http://localhost:8080/admin/picture/removePicture/"+id,
+                    dataType:"text",
+                    data:{"id":id},
+                    type:"post",
+                    cache:false,
+                    success:function(data) {
+                        $("form").submit();
+                    }
+                });
+                layer.close(index);
+            });
+        });
+    }
+    //查询
+    function submitQuery() {
+        var start= $("#test1").val();
+        var end= $("#test2").val();
+        if (start.trim()=="" || start==null || end.trim()=="" || end==null){
+            alert("时间不能为空");
+            return;
+        }
+        if (start > end){
+            alert("开始时间不能大于结束时间");
+            return;
+        }
+        $("form").submit();
+    };
+    function  queryPictures(a) {
+        $("#startpage").val(a);
+        $("form").submit();
+    };
+</script>
+
+</body>
+</html>

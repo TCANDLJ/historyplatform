@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <title>admin 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/assets/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="/layui/css/layui.css" >
+    <script type="text/javascript">
+    </script>
+    <style type="text/css">
+       #picture p{
+        color: red;
+       }
+        #save:hover{
+        cursor: pointer;
+      }
+    </style>
+</head>    
+<body>
+<div class="container">
+	<div class="row">
+        <div th:replace="head::minHead"></div>
+	<div class="span10">
+	<div class="secondary-masthead">
+		<ul class="nav nav-pills pull-right">
+			<li>
+                <a href="/index/loginout"><i class="icon-globe"></i> Logout</a>
+			</li>
+		</ul>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">Admin</a> <span class="divider">/</span>
+			</li>
+			<li class="active">图片上传</li>
+		</ul>
+	</div>
+	</div>
+     <div id="picture" style="width: 970px;height: 800px;margin-left: 230px;margin-top: 100px;">
+         <div style="width: 970px;height: 40px;line-height: 40px;">
+             <span style="float: left;">图片类型：</span>
+             <div style="width: 100px;height: 40px;float: left;">
+                 <select id="onSelect" style="width: 100px;" onchange="onSelect()">
+                     <option value="1">大广告</option>
+                     <option value="2">小广告</option>
+                     <option value="3">医院图片</option>
+                     <option value="4">科室医生</option>
+                 </select>
+             </div>
+             <br>
+         </div>
+         <div id="kindName" style="width: 970px;height: 40px;line-height: 40px;display: none;">
+             <span style="float: left;">医生姓名：</span>
+             <div style="width: 100px;height: 40px;float: left;">
+                 <input id="doctorName" type="text" style="width: 100px;" minlength="3" maxlength="15" />
+             </div>
+             <div style="width: 300px;height: 40px;float: left;margin-left: 20px;line-height: 40px;color: red;" id="kindNameMessage"><p ></p></div>
+             <br>
+         </div>
+         <div id="doctor" style="width: 970px;height: 40px;line-height: 40px;display: none;">
+             <span style="float: left;">医生职位：</span>
+             <div style="width: 100px;height: 40px;float: left;">
+                 <input id="doctorJob" type="text" style="width: 180px;" minlength="3" maxlength="15" />
+             </div>
+             <div style="width: 300px;height: 40px;float: left;margin-left: 100px;line-height: 40px;color: red;" id="doctorJobMessage"><p></p></div>
+             <br>
+         </div>
+         <div id="historyName" style="width: 970px;height: 40px;line-height: 40px;display: none;">
+           <span style="float: left;">医院名称：</span>
+           <div style="width: 200px;height: 40px;float: left;">
+               <input id="historyVal" type="text" style="width: 200px;" minlength="3" maxlength="50" />
+           </div>
+           <div style="width: 300px;height: 40px;float: left;margin-left: 20px;line-height: 40px;color: red;" id="historyMessage"><p ></p></div>
+             <br>
+         </div>
+
+         <div id="kinds" style="width: 970px;height: 100px;line-height: 40px;display: none;">
+             <span style="float: left;">科室：&nbsp;&nbsp;&nbsp;</span>
+             <div style="width: 800px;height: 100px;float: left;" id="kind" >
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',1,'))?true:false}" type="radio" value="1">皮肤性病科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',2,'))?true:false}" type="radio" value="2">消化内科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',3,'))?true:false}" type="radio" value="3">内分泌科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',4,'))?true:false}" type="radio" value="4">呼吸内科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',5,'))?true:false}" type="radio" value="5">妇产科</input><br>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',6,'))?true:false}" type="radio" value="6">眼科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',7,'))?true:false}" type="radio" value="7">肝胆胰腺外科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',8,'))?true:false}" type="radio" value="8">风湿免疫科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',9,'))?true:false}" type="radio" value="9">泌尿外科</input><br>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',10,'))?true:false}" type="radio" value="10">普通内科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',11,'))?true:false}" type="radio" value="11">普外科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',12,'))?true:false}" type="radio" value="12">儿科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',13,'))?true:false}" type="radio" value="13">神经内科</input>
+                 <input name="kingdom" th:attr="checked=${(history ne null && (','+history.kingdom+',').contains(',14,'))?true:false}" type="radio" value="14">其他</input>
+             </div>
+             <div style="width: 200px;height: 40px;top:-20px;left: 450px;line-height: 40px;position: relative;color: red;"><p id="kingMessage"></p></div>
+         </div><br>
+         <div style="width: 970px;height: 40px;line-height: 40px;">
+             <span style="float: left;">图片上传：</span>
+             <div class="layui-upload">
+                 <button type="button" class="layui-btn layui-btn-normal" id="selectPicture">选择图片</button>
+                 <button type="button" class="layui-btn" onclick="checkData()">开始上传</button>
+                 <button type="hidden"   id="uploadPicture"></button>
+             </div>
+             <br>
+         </div><br>
+      </div>
+     </div>
+	</div> 
+</div> 
+ <script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use('upload', function(){
+
+        var upload = layui.upload;
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#selectPicture'
+            ,url: '/admin/picture/upload/'
+            ,auto: false
+            ,bindAction: '#uploadPicture'
+            ,accept: 'images'
+            ,size: '10240'
+            ,before: function (obj) {
+                var type=$("#onSelect").find("option:selected").val();
+                if(type==1 || type==2){
+                    this.data = {
+                        'type':  $("#onSelect").find("option:selected").val()
+                    }
+                }else if (type==3){
+                    this.data = {
+                        'type':  $("#onSelect").find("option:selected").val(),
+                        'historyVal': $("#historyVal").val()
+                    }
+                }else {
+                    this.data = {
+                        'type':  $("#onSelect").find("option:selected").val(),
+                        'historyVal': $("#historyVal").val(),
+                        'kinds': $('input:radio[name="kingdom"]:checked').val(),
+                        'doctorName': $("#doctorName").val(),
+                        'doctorJob' : $("#doctorJob").val()
+                    }
+                }
+            }
+           ,done: function(res){
+                var layer = layui.layer;
+                layer.msg('图片上传成功', {
+                    icon: 6,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                },function () {
+                    window.location.href="http://localhost:8080/adUpload";
+                });
+            }
+        });
+    });
+
+    function checkData() {
+        var type=$("#onSelect").find("option:selected").val();
+        var historyVal=$("#historyVal").val();
+        var doctorName=$("#doctorName").val();
+        var doctorJob=$("#doctorJob").val();
+        var len = $('input:radio[name="kingdom"]:checked').length;
+        if (type =="3"){
+            if(historyVal.trim()=="" || historyVal==null || historyVal==undefined){
+                $("#historyMessage").text("医院名称不能为空");
+                return;
+            }
+        }else if (type=="4"){
+
+            if(doctorName.trim()=="" || doctorName==null || doctorName==undefined){
+                $("#kindNameMessage").text("医生姓名不能为空");
+                return;
+            }
+            if(doctorJob.trim()=="" || doctorJob==null || doctorJob==undefined){
+                $("#doctorJobMessage").text("医生职务不能为空");
+                return;
+            }
+            if(historyVal.trim()=="" || historyVal==null || historyVal==undefined){
+                $("#historyMessage").text("医院名称不能为空");
+                return;
+            }
+            if(len<=0){
+                $("#kingMessage").text("科室不能为空");
+                return;
+            }
+        }
+        $("#uploadPicture").click();
+    }
+
+
+</script>
+<script type="text/javascript">
+    function onSelect() {
+        var value=$("#onSelect").find("option:selected").val();
+        $("#historyName").css("display","none");
+        $("#kinds").css("display","none");
+        $("#kindName").css("display","none");
+        $("#doctor").css("display","none");
+        if (value=="3"){
+            $("#historyName").show();
+        }else if (value =="4"){
+            $("#historyName").show();
+            $("#kinds").show();
+            $("#kindName").show();
+            $("#doctor").show();
+        }
+    }
+</script>
+</body>
+</html>

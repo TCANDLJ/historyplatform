@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<meta charset="utf-8">
+    <title>admin 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script" rel="stylesheet" type="text/css">
+    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/font-awesome.css" rel="stylesheet">
+    <link href="/assets/css/admin.css" rel="stylesheet">
+    <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript">
+        
+        function articleType(a){
+
+        $("#articleType div").css("background-color","gray").attr("id",null);;
+        $(a).css("background-color","red").attr("id","articleTypeSelected");;
+      };
+
+    </script>
+    <style type="text/css">
+
+   #articleType div:hover{
+      cursor: pointer;
+    }
+   #keep3{
+       cursor: pointer;
+   }
+    </style>
+</head>    
+<body>
+
+<div class="container">
+		
+	<div class="row">
+        <div th:replace="head::minHead"></div>
+	<div class="span10">
+	<div class="secondary-masthead">
+		<ul class="nav nav-pills pull-right">
+			<li>
+                <a href="/index/loginout"><i class="icon-globe"></i> Logout</a>
+			</li>
+		</ul>
+
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">Admin</a> <span class="divider">/</span>
+			</li>
+			<li class="active">文章中心</li>
+		</ul>
+	</div>
+	</div> 
+	</div> 
+</div> 
+ <div id="myPersonCenter5" style="width: 1000px;margin-left: 200px;margin-top: -250px;">
+                    <div style="width: 1000px;height: 40px;line-height: 40px;">
+                        <span style="float: left;font-family: 微软雅黑;">文章标题：</span>
+                        <div style="width: 520px;height: 40px;background-color: yellow;float: left;margin-left: 10px;">
+                           <input th:id="articleTile" type="text" placeholder="最多输入30个字符" maxlength="30" minlength="5" style="width: 520px;height: 40px;"></input>
+                        </div>
+                    </div><br>
+                    <div  style="width: 1000px;height: 120px;">
+                      <span style="float: left;font-family: 微软雅黑;">文章类型：</span>
+                      <div id="articleType"  style="float: left;width: 500px;">
+                         <div id="articleTypeSelected" th:value="1" style="width: 100px;height: 30px;background-color: red;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">疾病小常识</p>
+                         </div>
+                         <div th:value="2" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">运动小知识</p>
+                         </div>
+                         <div th:value="3" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">日常疾病</p>
+                         </div>
+                         <div th:value="4" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">科学养生</p>
+                         </div>
+                         <div th:value="5" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">健康食谱</p>
+                         </div>
+                         <div th:value="6" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">病后恢复</p>
+                         </div>
+                         <div th:value="7" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">今日报道</p>
+                         </div>
+                         <div th:value="8" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">骨科介绍</p>
+                         </div>
+                         <div th:value="9" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">感冒小课堂</p>
+                         </div>
+                         <div th:value="10" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">女生小秘密</p>
+                         </div>
+                         <div th:value="11" style="width: 100px;height: 30px;background-color: gray;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">其他</p>
+                         </div>
+                         
+                      </div>
+                    </div><br>
+
+              <div id="message" style="width: 300px;height: 100px;background-color: black;opacity: 0.6;position: absolute;top: 240px;left: 600px;text-align: center;line-height: 100px;display: none;">
+                 <p style="font-size: 20px;font-family: 微软雅黑;font-weight: bold;color: white;"></p>
+              </div>
+                    <div style="width: 1000px;overflow: auto;">
+                        <span  style="float: left;font-family: 微软雅黑;">文章内容：</span>
+                        <div id="keep3" style="width: 50px;height: 20px;background-color: red;line-height: 20px;float: right;text-align: center;">
+                            <p style="font-family: 微软雅黑;color: white;font-weight: bold;" onclick="saveArticle()">保存</p>
+                        </div>
+                        <br><br>
+                        <div style="width: 1000px;height: 800px;">
+                            <div id="editor" type="text/plain" style="width:999px;height:500px;"></div>
+                       </div>
+                    </div>
+                </div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script type="text/javascript">
+
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor',{
+        toolbars:  [
+    [
+        'undo', //撤销
+        'redo', //重做
+        'bold', //加粗
+        'indent', //首行缩进
+        'italic', //斜体
+        'underline', //下划线
+        'strikethrough', //删除线
+        'subscript', //下标
+        'fontborder', //字符边框
+        'superscript', //上标
+        'formatmatch', //格式刷
+        'blockquote', //引用
+        'pasteplain', //纯文本粘贴模式
+        'selectall', //全选
+        'preview', //预览
+        'horizontal', //分隔线
+        'removeformat', //清除格式
+        'time', //时间
+        'date', //日期
+        'unlink', //取消链接
+        'insertrow', //前插入行
+        'insertcol', //前插入列
+        'mergeright', //右合并单元格
+        'mergedown', //下合并单元格
+        'deleterow', //删除行
+        'deletecol', //删除列
+        'splittorows', //拆分成行
+        'splittocols', //拆分成列
+        'splittocells', //完全拆分单元格
+        'deletecaption', //删除表格标题
+        'inserttitle', //插入标题
+        'deletetable', //删除表格
+        'cleardoc', //清空文档
+        'insertparagraphbeforetable', //"表格前插入行"
+        'insertcode', //代码语言
+        'fontfamily', //字体
+        'fontsize', //字号
+        'paragraph', //段落格式
+        'edittable', //表格属性
+        'edittd', //单元格属性
+        'link', //超链接
+        'emotion', //表情
+        'spechars', //特殊字符
+        'searchreplace', //查询替换
+        'justifyleft', //居左对齐
+        'justifyright', //居右对齐
+        'justifycenter', //居中对齐
+        'justifyjustify', //两端对齐
+        'forecolor', //字体颜色
+        'backcolor', //背景色
+        'insertorderedlist', //有序列表
+        'insertunorderedlist', //无序列表
+        'fullscreen', //全屏
+        'directionalityltr', //从左向右输入
+        'directionalityrtl', //从右向左输入
+        'rowspacingtop', //段前距
+        'rowspacingbottom', //段后距
+        'pagebreak', //分页
+        'insertframe', //插入Iframe
+        'imagenone', //默认
+        'imageleft', //左浮动
+        'imageright', //右浮动
+        'imagecenter', //居中
+        'lineheight', //行间距
+        'edittip ', //编辑提示
+        'customstyle', //自定义标题
+        'autotypeset', //自动排版
+        'touppercase', //字母大写
+        'tolowercase', //字母小写
+        'background' //背景
+        ]
+    ],
+        autoHeightEnabled: true,
+        autoFloatEnabled: true
+    });
+
+    function saveArticle() {
+        var articleTile=$("#articleTile").val();
+        var articleType=$("#articleTypeSelected").attr("value");
+        var articleContent=UE.getEditor('editor').getContent();
+
+        if (articleTile.trim()==""||articleTile==null){
+            $("#message p").text("标题不能为空");
+            $("#message").show();
+            setTimeout(function () {
+                $("#message").css("display","none");
+            },2000);
+            return;
+        }
+        if (!UE.getEditor('editor').hasContents()){
+            $("#message p").text("文章内容不能为空");
+            $("#message").show();
+            setTimeout(function () {
+                $("#message").css("display","none");
+            },2000);
+            return;
+        }
+        //保存草稿箱
+        $.ajax({
+            url:"http://localhost:8080/admin/saveArticle",
+            dataType:"text",
+            data:{"title":articleTile,"type":articleType,"content":articleContent},
+            type:"POST",
+            success:function(data){
+                $("#articleTile").val(null);
+                UE.getEditor('editor').setContent('');
+                $("#message p").text("保存成功");
+                $("#message").show();
+                setTimeout(function () {
+                    $("#message").css("display","none");
+                },2000);
+            }
+        });
+
+    };
+
+    
+</script>
+
+
+</body>
+</html>

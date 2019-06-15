@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>人民公众平台服务登录</title>
+  <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+  <meta name="author" content="Vincent Garreau" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" media="screen" href="/css/style2.css">
+  <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+</head>
+<body>
+
+<div id="particles-js">
+		<div class="login">
+			<div class="login-top">
+				登录<p id="prompt" th:text="${msg}" style="color: red;font-size: 10px;"></p>
+			</div>
+			<form th:action="@{/login}" th:method="post">
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="/img/name.png"/></div>
+				<div class="login-center-input">
+					<input type="text" id="username" name="name" value="" placeholder="请输入您的用户名" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的用户名'"/>
+					<div class="login-center-input-text">用户名</div>
+				</div>
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="/img/password.png"/></div>
+				<div class="login-center-input">
+					<input type="password" id="p" name="password"value="" placeholder="请输入您的密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的密码'"/>
+					<div class="login-center-input-text">密码</div>
+				</div>
+			</div>
+			</form>
+			<div class="login-button" onclick="login()" id="submit">
+				登陆
+			</div>
+		</div>
+		<div class="sk-rotating-plane"></div>
+</div>
+
+<!-- scripts -->
+<script src="/js/particles.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    function login() {
+        var p=$("#p").val();
+        var username=$("#username").val();
+        var reg=/^[0-9a-zA-Z]{6,10}$/;
+        var regname=/^[A-Za-z\u4e00-\u9fa5]{3,8}$/;
+        if (!regname.test(username)){
+            $("#prompt").text("用户名只能是字母，汉字组成，3-8字符");
+            return;
+        }
+         if(!reg.test(p)){
+            $("#prompt").text("密码只能是字母和数字组成，6-10字符");
+            return;
+        }
+        $("form").submit();
+        $("#submit").attr("disable","true");
+    }
+
+
+    function hasClass(elem, cls) {
+	  cls = cls || '';
+	  if (cls.replace(/\s/g, '').length == 0) return false; //当cls没有参数时，返回false
+	  return new RegExp(' ' + cls + ' ').test(' ' + elem.className + ' ');
+	}
+	 
+	function addClass(ele, cls) {
+	  if (!hasClass(ele, cls)) {
+	    ele.className = ele.className == '' ? cls : ele.className + ' ' + cls;
+	  }
+	}
+	 
+	function removeClass(ele, cls) {
+	  if (hasClass(ele, cls)) {
+	    var newClass = ' ' + ele.className.replace(/[\t\r\n]/g, '') + ' ';
+	    while (newClass.indexOf(' ' + cls + ' ') >= 0) {
+	      newClass = newClass.replace(' ' + cls + ' ', ' ');
+	    }
+	    ele.className = newClass.replace(/^\s+|\s+$/g, '');
+	  }
+	}
+
+</script>
+</body>
+</html>

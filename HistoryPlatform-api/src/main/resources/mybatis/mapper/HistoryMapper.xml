@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.HistoryMapper">
+   <insert id="saveHistory">
+       INSERT INTO  history(name,phone,address,description,kingdom,create_time) VALUES
+       (#{name},#{phone},#{address},#{description},#{kingdom},now())
+   </insert>
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT  count(1) FROM history where
+        DATE(create_time) &lt;=#{endDate}
+        and DATE(create_time) >=#{startDate}
+        <if test="name != null">
+         and  name=#{name}
+        </if>
+    </select>
+    <select id="queryHistorys" resultType="com._520it.pojo.History">
+        select t.id,  t.name,t.phone,t.create_time createTime,t.address ,
+        (select group_concat(kinds_name separator ',')  from kinds t1 where find_in_set(t1.id,t.kingdom)) kingdom
+        from history t where
+         DATE(create_time) &lt;=#{history.endDate}
+        and DATE(create_time) >=#{history.startDate}
+        <if test="history.name !=null">
+          and  name=#{history.name}
+        </if>
+        ORDER BY t.create_time desc
+        limit #{startIndex},#{endIndex}
+    </select>
+    <select id="removeHistory">
+        delete from history WHERE id=#{id}
+    </select>
+    <select id="editHistory" resultType="com._520it.pojo.History">
+        select
+        t.name,
+        t.id,
+        t.phone,
+        t.address,
+        t.description,
+        t.kingdom
+        FROM history t WHERE t.id=#{id}
+    </select>
+    <select id="updateHistory">
+        UPDATE history set name=#{name},phone=#{phone},address=#{address},description=#{description},kingdom=#{kingdom}  where id=#{id}
+     </select>
+    <select id="queryHistory" resultType="com._520it.pojo.History">
+        select t.name,t.phone,t.address,t.description,
+        (select src from picture where historyName =t.name and type=3)  pictureSrc
+        from history t
+        where t.`name`
+        like  concat(concat('%',#{name}),'%')
+        ORDER BY REPLACE( t.`name`,#{name},'') limit 1
+    </select>
+    
+    <select id="countUserTotal" resultType="java.lang.Integer">
+
+        SELECT count(1) FROM picture t WHERE t.historyName=#{name} and t.type=4 and t.kinds=#{kinds}
+    </select>
+    <select id="queryKinds" resultType="com._520it.pojo.KindsUser">
+      SELECT t.name,t.job,t.src,t.kinds FROM picture t WHERE
+      t.historyName=#{history.name} and t.type=4 and t.kinds=#{history.kinds}
+      ORDER BY t.create_time desc
+      limit #{startIndex},#{endIndex}
+    </select>
+
+</mapper>

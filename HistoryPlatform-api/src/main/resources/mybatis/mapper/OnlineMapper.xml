@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.OnlineMapper">
+
+    <select id="queryOnlineDoctors" resultType="com._520it.pojo.KindsUser">
+        SELECT  t.name,t.status,t.picture_src src,t.id,
+         (SELECT kinds_name FROM kinds  WHERE id=t.kinds) kinds
+         FROM  user t where t.type=5
+         ORDER BY  t.create_time  DESC
+         limit 8
+    </select>
+
+</mapper>

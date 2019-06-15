@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<meta charset="utf-8">
+    <title>admin 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script" rel="stylesheet" type="text/css">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/assets/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/admin.css" rel="stylesheet">
+	<script src="/laydate/laydate.js"></script>
+   <script type="text/javascript">
+   	
+   	laydate.render({
+  elem: '#test1'
+});
+laydate.render({
+  elem: '#test2'
+});
+   </script>
+	<style type="text/css">
+		#fenye a:hover{
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="container">
+	<div class="row">
+		<div th:replace="head::minHead"></div>
+	<div class="span10">
+	<div class="secondary-masthead">
+    	<ul class="nav nav-pills pull-right">
+			<li>
+				<a href="/index/loginout"><i class="icon-globe"></i> Logout</a>
+			</li>
+		</ul>
+
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">Admin</a> <span class="divider">/</span>
+			</li>
+			<li class="active">文章管理</li>
+		</ul>
+		
+	</div>
+	
+	<div class="main-area dashboard">
+				<div class="row">
+				<div class="span10">
+					<div class="slate">
+						<form class="form-inline" th:action="@{/admin/user/queryArticles}" th:method="post">
+							<input type="hidden" th:id="startpage" name="startPage" th:value="${article !=null?article.startPage:null}"/>
+							<div style="width: 80px;float: left;text-align: center;line-height: 40px;"><p>文章类型</p></div>
+					     	 <div style="width: 100px;float: left;text-align: center;line-height: 40px;">
+					     	 	<select style="width: 100px;" name="type">
+					  	 			 <option th:selected="${article !=null && article.type=='1'}" th:value="1">疾病小常识</option>
+									 <option th:selected="${article !=null && article.type=='2'}" th:value="2">运动小知识</option>
+									 <option th:selected="${article !=null && article.type=='3'}" th:value="3">日常疾病</option>
+									 <option th:selected="${article !=null && article.type=='4'}" th:value="4">科学养生</option>
+									 <option th:selected="${article !=null && article.type=='5'}" th:value="5">健康食谱</option>
+									 <option th:selected="${article !=null && article.type=='6'}" th:value="6">病后恢复</option>
+									 <option th:selected="${article !=null && article.type=='7'}" th:value="7">今日报道</option>
+									 <option th:selected="${article !=null && article.type=='8'}" th:value="8">骨科介绍</option>
+									 <option th:selected="${article !=null && article.type=='9'}" th:value="9">感冒小课堂</option>
+									 <option th:selected="${article !=null && article.type=='10'}" th:value="10">女生小秘密</option>
+									 <option th:selected="${article !=null && article.type=='11'}" th:value="11">其他</option>
+					  	 		</select>
+					     	 </div>
+							<div style="width: 80px;float: left;text-align: center;line-height: 40px;"><p>创建时间：</p></div>
+			                <div style="float: left;text-align: center;line-height: 40px;margin-right: 20px;">
+			                   <input type="text" name="startDate" th:value="${article !=null?article.startDate:null}"  class="demo-input" placeholder="请选择日期至" id="test1" width="80px">
+			                </div>
+			                <div style="float: left;text-align: center;line-height: 40px;margin-right: 20px;">
+			                   <input type="text" name="endDate" th:value="${article !=null?article.endDate:null}" class="demo-input" placeholder="请选择日期" id="test2" width="80px">
+			                </div>
+							<button onclick="submitQuery()"  type="button" class="btn btn-primary">查询</button>
+						</form>
+					
+					</div>
+				
+				</div>
+			</div>
+			<div class="row">
+				<div class="span10">
+					<div class="slate">
+						<table class="orders-table table">
+						<thead>
+							<tr>
+								<th>文章名称</th>
+								<th>作者名</th>
+								<th>创建时间</th>
+								<th>阅读量</th>
+								<th>文章类型</th>
+								<th>文章状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody th:if="${result ne null}">
+							<tr th:each="article:${result.list}">
+								<td>
+									<a th:href="@{'/admin/index/articleDetail/'+${article.id}}" target="_blank" th:text="${article.title}"></a>
+								</td>
+								<td th:text="${article.userId}"></td>
+								<td th:text="${article.createTime}"></td>
+								<td th:text="${article.readNum}"></td>
+								<td th:if="${article.type eq '1'}" th:text="疾病小常识"></td>
+								<td th:if="${article.type eq '2'}" th:text="运动小知识"></td>
+								<td th:if="${article.type eq '3'}" th:text="日常疾病"></td>
+								<td th:if="${article.type eq '4'}" th:text="科学养生"></td>
+								<td th:if="${article.type eq '5'}" th:text="健康食谱"></td>
+								<td th:if="${article.type eq '6'}" th:text="病后恢复"></td>
+								<td th:if="${article.type eq '7'}" th:text="今日报道"></td>
+								<td th:if="${article.type eq '8'}" th:text="骨科介绍"></td>
+								<td th:if="${article.type eq '9'}" th:text="感冒小课堂"></td>
+								<td th:if="${article.type eq '10'}" th:text="女生小秘密"></td>
+								<td th:if="${article.type eq '11'}" th:text="其他"></td>
+								<td th:if="${article.status eq '2'}" th:text="未通过"></td>
+								<td th:if="${article.status eq '3'}" th:text="已通过"></td>
+								<td th:if="${article.status eq '4'}" th:text="未审核"></td>
+								<td>
+									<a class="btn btn-small btn-danger" data-toggle="modal" th:href="'javascript:removeArticle('+${article.id}+');'">Remove</a>
+								</td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+				<!--分页-->
+				<div class="span5">
+					<div  class="pagination pull-left" th:if="${result ne null}">
+						<ul th:id="fenye">
+							<li th:if="${result.startPage > 1}"><a th:onclick="'queryArticles('+${result.startPage -1}+');'">Prev</a></li>
+							<li class="active">
+								<a href="#" th:text="${result.startPage}"></a>
+							</li>
+							<li th:if="${result.startPage lt result.totalPage}"><a th:onclick="'queryArticles('+${result.startPage +1}+');'">Next</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	</div>
+	
+	</div> 
+		
+	</div> 
+		
+</div> 
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script type="text/javascript">
+
+    function removeArticle(id) {
+
+        if (confirm("是否删除该用户？")){
+            $.ajax({
+                url:"http://localhost:8080/admin/user/removeArticle/"+id,
+                dataType:"text",
+                data:{"id":id},
+                type:"post",
+                cache:false,
+                success:function(data) {
+                    $("form").submit();
+                }
+            });
+        }
+    }
+
+    function submitQuery() {
+        var start= $("#test1").val();
+        var end= $("#test2").val();
+        if (start.trim()=="" || start==null || end.trim()=="" || end==null){
+            alert("时间不能为空");
+            return ;
+        }
+        if (start > end){
+            alert("开始时间不能大于结束时间");
+            return;
+        }
+        $("form").submit();
+    };
+    function  queryArticles(a) {
+        $("#startpage").val(a);
+        $("form").submit();
+    };
+</script>
+
+
+</body>
+</html>

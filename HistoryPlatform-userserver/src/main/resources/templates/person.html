@@ -1,0 +1,680 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>人民医院公众服务平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+<META HTTP-EQUIV="expires" CONTENT="0">
+<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="/css/slider.css">
+<link rel="stylesheet" href="/layui/css/layui.css" >
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"> </script>
+<script src="/layui/layui.js"></script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="/js/jquery.md5.js"></script>
+<script type="text/javascript">
+			jQuery(document).ready(function($) {
+            $("#myPersonCenter1").show();
+			});
+      function myPerson(a){
+         var text=$("#myPerson"+a).children().text();
+         $("#personTile").children().text(text);
+
+       if(a==4){
+          $("#myPerson5,#myPerson6").show().css("background-color","white");
+       }else if(a < 4) {
+         $("#myPersonCenter1,#myPersonCenter2,#myPersonCenter5,#myPersonCenter6,#myPerson5,#myPerson6").css("display","none");
+         $("#myPersonCenter"+a).show();
+       }else{
+         $("#myPersonCenter1,#myPersonCenter2,#myPersonCenter5,#myPersonCenter6").css("display","none");
+         $("#myPersonCenter"+a).show();
+       }
+       if(a==6){
+           $("#myPersonCenter6Make").children("div").css("background-color","gray");
+           $("#myPersonCenter6Make").children("div").eq(0).css("background-color","red");
+           articlePage(1,1);
+       }
+
+      };
+
+      function articleType(a){
+
+        $("#articleType div").css("background-color","white").attr("id",null);
+        $(a).css("background-color","red").attr("id","articleTypeSelected");
+      };
+      function editPw() {
+          var oldpwd=$("#oldpwd").val();
+          var p1=$("#newpw1").val();
+          var p2=$("#newpw2").val();
+          var p=$("#pw").val();
+          var reg=/^[0-9a-zA-Z]{6,10}$/;
+          var pwd = $.md5(p+p);
+          if (!reg.test(p)  ||  oldpwd != pwd){
+              $("#pw").val(null);
+              $("#pw").attr("placeholder","原始密码输入错误");
+              return;
+          }
+          if (p1 !=p2 ){
+              $("#newpw2").val(null);
+              $("#newpw1").val(null);
+              $("#newpw1").attr("placeholder","******");
+              $("#newpw2").attr("placeholder","两次输入密码不正确，请重新输入");
+              return;
+          }else if(!reg.test(p1)){
+              $("#newpw2").val(null);
+              $("#newpw1").val(null);
+              $("#newpw2").attr("placeholder","******");
+              $("#newpw1").attr("placeholder","密码只能是字母和数字组成，6-10字符");
+              return;
+          }
+          $("#form").submit();
+      }
+
+      //分页查询
+      function articlePage(startPage,status){
+          $("#articleContent").children("div").eq(0).nextAll().remove();
+          $("#prevPage").unbind("click");
+          $("#nextPage").unbind("click");
+          $("#prevPage").css("display", "none");
+          $("#nextPage").css("display", "none");
+          //查找草稿箱
+          $.ajax({
+              url:"http://localhost/article/getArticles",
+              dataType:"json",
+              data:{"status":status,"startPage":startPage},
+              type:"POST",
+              cache:false,
+              success:function(data) {
+                  var articles = data.list;
+                  var statusValue="";
+                  if (articles!= null) {
+                  if (status == 1) {
+                      statusValue = "未申请";
+                  } else if (status == 2) {
+                      statusValue = "未通过";
+                  } else if (status == 3) {
+                      statusValue = "已通过";
+                  }
+                      for (var i = 0; i < articles.length; i++) {
+                          var html="";
+                          if (status ==1){
+                               html = '<div><div style="width: 300px;"><p>' + articles[i].title + '</p></div><div>' +
+                                  '<p>' + articles[i].createTime + '</p></div><div><p>' + statusValue + '</p></div><div><p>' +
+                                  '<button type="button" onclick="deleteArticle(' + articles[i].id + ')">删除</button>&nbsp;<button type="button" onclick="editArticle(' + articles[i].id + ')">编辑</button>&nbsp;<button type="button" onclick="applyArticle(' + articles[i].id + ')">上传</button></p></div></div>';
+
+                          }else{
+                              html = '<div><div style="width: 300px;"><p>' + articles[i].title + '</p></div><div>' +
+                                  '<p>' + articles[i].createTime + '</p></div><div><p>' + statusValue + '</p></div><div><p>' +
+                                  '<button type="button" onclick="deleteArticle(' + articles[i].id + ')">删除</button></p></div></div>';
+                          }
+
+                          $("#articleContent").append(html);
+                      }
+
+                      if (data.totalPage >1){
+                           if (data.startPage < data.totalPage && data.startPage >1 ){
+                               $("#prevPage").show();
+                               $("#nextPage").show();
+                               $("#nextPage").bind("click",function(){
+                                   articlePage(startPage + 1, status);
+                               });
+                               $("#prevPage").bind("click",function(){
+                                   articlePage(startPage - 1, status);
+                               });
+                          }else if (data.startPage ==1){
+                               $("#nextPage").show();
+                               $("#nextPage").bind("click",function(){
+                                   articlePage(startPage + 1, status);
+                               });
+                           }else if (data.startPage == data.totalPage){
+                               $("#prevPage").show();
+                               $("#prevPage").bind("click",function(){
+                                   articlePage(startPage - 1,status);
+                               });
+                           }
+                      }
+                  }
+              }
+          });
+      };
+
+      function getArticleByStatus(a,b){
+          $(a).parent().siblings().css("background-color","gray");
+          $(a).parent().css("background-color","red");
+          articlePage(1,b);
+      };
+      function deleteArticle(a) {
+          layer.confirm('确定是否删除该条文章?', {icon: 3, title:'友情提示'}, function(index){
+              $.ajax({
+                  url: "http://localhost/article/deleteArticle",
+                  dataType: "text",
+                  data: {"id": a},
+                  type: "get",
+                  cache: false,
+                  success: function (data) {
+                      myPerson(6);
+                      $("#message p").text("删除成功");
+                      $("#message").show();
+                      setTimeout(function () {
+                          $("#message").css("display", "none");
+                      }, 2000);
+                  }
+              });
+              layer.close(index);
+          });
+      };
+      function applyArticle(a) {
+          $.ajax({
+              url: "http://localhost/article/applyArticle",
+              dataType: "text",
+              data: {"id": a},
+              type: "get",
+              cache: false,
+              success: function (data) {
+                  myPerson(6);
+                  $("#message p").text("上传成功");
+                  $("#message").show();
+                  setTimeout(function () {
+                      $("#message").css("display", "none");
+                  }, 2000);
+              }
+          });
+      };
+
+
+</script>
+<style type="text/css">
+    *{padding:0;margin:0;}
+    body{
+    	background-color: 	Lavender;
+    }
+
+	li{
+				list-style: none;
+				font-family: 微软雅黑;
+				line-height: 50px;
+				font-size: 15px;
+				float: left;
+				margin-right: 100px;
+        
+		}
+    li a{
+       color: #24A593;
+    }
+    #person p:hover{
+      cursor: pointer;
+      background-color: white;
+          }
+    #keep1,#keep2,#keep3{
+      cursor: pointer;
+    }
+    #myPersonCenter6Make p:hover{
+      cursor: pointer;
+    }
+
+    #fenye div:hover{
+       cursor: pointer;
+    }
+    #articleType div:hover{
+      cursor: pointer;
+    }
+    #articleContent >div{
+        width: 600px;
+        height: 30px;
+    }
+    #articleContent >div>div{
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        float: left;
+        border: 1px solid gray;
+        overflow: hidden;
+    }
+    #articleContent >div>div>p{
+        font-family: 微软雅黑;
+        color: #24A593;
+        font-size: 10px;
+    }
+
+</style>
+
+</head>
+<body>
+        <input id="oldpwd" th:value="${session.user ne null? session.user.password:''}" type="hidden"/>
+			<!--minhead-->
+
+            <div th:replace="minhead::minhead"></div>
+
+
+            <!--标题-->
+      <div id="personTile" style="width: 800px;height: 50px;margin: auto;line-height: 50px;text-align: center;margin-bottom: 20px;">
+           <p style="font-size: 40px;font-family: 微软雅黑;font-weight: bold;color: #24A593;">个人中心</p>
+      </div>
+
+			<!-- 导航条-->
+      <div style="width: 800px;height: 50px;background-color: white;margin: auto;" >
+              <li><a href="/">首页</a></li>
+              <li><a href="/article/queryNews/0">健康科普</a></li>
+              <li><a href="/history/queryHistory">全国医院</a></li>
+              <li><a href="detail.html">就医推荐</a></li>
+              <li><a href="tribune.html" target="_blank">病友论坛</a></li>
+      </div><br><br>
+      
+      <div style="width: 800px;margin: auto;overflow: auto;">
+               <div  id="person"  style="width: 100px;height: auto;background-color: gray;float: left; ">
+                <div id="myPerson1" style="width: 100px;height: 30px;line-height: 30px;text-align: center;border-bottom: 2px solid Lavender;" onclick="myPerson('1')">
+                  <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">用户中心</p>
+                </div>  
+               
+                <div id="myPerson2" style="width: 100px;height: 30px;line-height: 30px;text-align: center;border-bottom: 2px solid Lavender;display: none;" onclick="myPerson('2')">
+                  <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">会员中心</p>
+                </div>
+                <div id="myPerson3" style="width: 100px;height: 30px;line-height: 30px;text-align: center;border-bottom: 2px solid Lavender;display: none;" onclick="myPerson('3')">
+                  <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">积分中心</p>
+                </div>
+                <div id="myPerson4" style="width: 100px;height: 30px;line-height: 30px;text-align: center;border-bottom: 2px solid Lavender;" onclick="myPerson('4')">
+                  <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">文章管理</p>
+                </div>
+                <div id="myPerson5" style="width: 100px;height: 30px;line-height: 30px;text-align: center;border-bottom: 2px solid Lavender;display: none;" onclick="myPerson('5')">
+                  <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">文章编辑</p>
+                </div>       
+                <div id="myPerson6" style="width: 100px;height: 30px;line-height: 30px;text-align: center;display: none;" onclick="myPerson('6')">
+                  <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">投稿中心</p>
+                </div>                 
+               </div>
+
+               <!--右边之用户中心-->
+               <div id="myPersonCenter1" style="width: 600px;float: right;display: none;" >
+                 <div style="width: 600px;height: 200px;background-color: white;border: 2px solid gray;">
+                    <div style="width: 100px;height: 100px;margin-left: 20px;margin-top: 20px;float: left;">
+                      <div style="width: 80px;height: 80px;border-radius: 50%;overflow: hidden;">
+                        <img th:src="'http://localhost/'+${session.user.pictureSrc}"> <!--头像-->
+                      </div><br>
+                      <div style="width: 100px;height: 20px;line-height: 20px;margin-left: 0px;">
+                          <div class="layui-upload">
+                              <button type="button" class="layui-btn"  id="selectPicture">修改头像</button>
+                          </div>
+                      </div>
+                    </div>
+                    <div style="width: 436px;height: 166px;margin-top: 20px;float: left;margin-left: 40px;">
+                           <p th:text="'用户名:'+${session.user.name}"></p><br><br>
+                           <p th:if="${session.user.type eq '1'}" th:text="'会员类型:普通会员'"></p>
+                           <p th:if="${session.user.type eq '2'}" th:text="'会员类型:高级会员'"></p>
+                           <p th:if="${session.user.type eq '3'}" th:text="'会员类型:医师会员'"></p><br><br>
+                           <p th:text="'会员积分:'+${session.user.score}"></p><br>
+                    </div>
+                 </div> <br><br>   
+                <!--修改密码-->
+                <div style="width: 600px;height: 200px;background-color: white;">
+                 <div style="width: 600px;height: 50px;background-color: gray;line-height: 50px;">
+                   <div style="width: 200px;height: 50px;line-height: 50px;float: left;">
+                     <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">修改中心</p>
+                   </div>
+                    <div id="keep2" style="width: 100px;height: 50px;line-height: 50px;float: right;" onclick="editPw()">
+                      <p style="font-family: 微软雅黑;color: white;font-weight: bold;">保存密码</p>
+                   </div>
+                     
+                 </div> 
+                 <div style="width: 600px;height: 50px;line-height: 50px;">
+                    <div style="width: 100px;height: 50px;line-height: 50px;text-align: right;float: left;">
+                      <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">原始密码:</p>
+                    </div>
+                     <div  style="width: 500px;height: 50px;line-height: 50px;float: left;overflow: hidden;">
+                         <input id="pw" type="password" placeholder="******" style="width: 500px;height: 36px;"/>
+                     </div>
+                 </div>
+                 <form id="form"  th:action="updatePW" th:method="post">
+                 <div style="width: 600px;height: 50px;line-height: 50px;">
+                     <div style="width: 100px;height: 50px;line-height: 50px;text-align: right;float: left;">
+                      <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">新密码:</p>
+                    </div>
+                     <div  style="width: 500px;height: 50px;line-height: 50px;float: left;overflow: hidden;">
+                         <input id="newpw1" name="newPW" value="" type="password" placeholder="******"  style="width: 500px;height: 36px;"/>
+                     </div>
+                 </div>
+                 </form>
+                 <div style="width: 600px;height: 50px;line-height: 50px;">
+                     <div style="width: 100px;height: 50px;line-height: 50px;text-align: right;float: left;">
+                      <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">确认新密码:</p>
+                    </div>
+                     <div  style="width: 500px;height: 50px;line-height: 50px;float: left;overflow: hidden;">
+                         <input id="newpw2" value="" type="password" placeholder="******" style="width: 500px;height: 36px;"/>
+                     </div>
+                 </div>
+
+               </div>
+ 
+
+             
+               </div>
+
+               <!--右边之会员中心-->
+               <div id="myPersonCenter2" style="width: 600px;float: right;display: none;">
+                    <!--会员申请-->
+                <div style="width: 600px;height:auto;background-color: white;">
+                 <div style="width: 600px;height: 50px;background-color: gray;line-height: 50px;">
+                   <div style="width: 200px;height: 50px;line-height: 50px;float: left;">
+                     <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;">会员申请</p>
+                   </div>
+                    <div id="keep2" style="width: 100px;height: 50px;line-height: 50px;float: right;">
+                      <p style="font-family: 微软雅黑;color: white;font-weight: bold;">提交申请</p>
+                   </div>
+                     
+                 </div> 
+                 <div style="width: 600px;height: 650px;">
+                    <div style="width: 200px;height: 350px;line-height: 30px;float: left;">
+                       1，当会员积分达到1000以上，将可以自动为高级会员；<br>
+                       2，提供医生专业证明，身份证正反面照片也可以申请为，医生会员；<br>
+                       会员说明：普通会员只能浏览网站；高级会员有发表文章的权限；医生会员可以在线就诊；
+
+                    </div>
+                    <div style="width: 380px;height: 550px;float: left;margin-left: 20px;">
+                        <br><p>身份证正面照</p><br>
+                        <div style="width: 380px;height: 150px;background-color: red;overflow: hidden;"></div>
+                        <br><p>身份证反面照</p><br>
+                        <div style="width: 380px;height: 150px;background-color: red;overflow: hidden;"></div>
+                        <br><p>医生证明材料</p><br>
+                        <div style="width: 380px;height: 150px;background-color: red;overflow: hidden;"></div>
+                    </div>
+                   
+                 </div>   
+               </div>
+               </div>
+
+               <!--右边之投稿中心-->
+               <div id="myPersonCenter6" style="width: 600px;float: right;display: none;height: 300px; ">
+                  <div id="myPersonCenter6Make" style="width: 600px;height:50px;background-color: gray; ">
+                     <div style="width: 200px;height: 50px;float: left;line-height: 50px;text-align: center;">
+                       <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;" onclick="getArticleByStatus(this, 1)">草稿箱</p>
+                     </div>
+                     <div style="width: 200px;height: 50px;float: left;line-height: 50px;text-align: center;">
+                       <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;" onclick="getArticleByStatus(this, 2)">未通过</p>
+                     </div>
+                     <div style="width: 200px;height: 50px;float: left;line-height: 50px;text-align: center;">
+                       <p style="font-family: 微软雅黑;color: #24A593;font-weight: bold;" onclick="getArticleByStatus(this, 3)">已通过</p>
+                     </div>
+                  </div><br>
+                   <div id="articleContent">
+                 <!--头部-->
+                  <div style="background-color:#24A593;">
+                     <div style="width: 300px;">
+                        <p style="font-family: 微软雅黑;color: white;font-size: 10px;">文章标题</p>
+                     </div>
+                     <div style="width: 100px;">
+                        <p style="font-family: 微软雅黑;color: white;font-size: 10px;">申请时间</p>
+                     </div>
+                     <div style="width: 100px;">
+                        <p style="font-family: 微软雅黑;color: white;font-size: 10px;">申请状态</p>
+                     </div>
+                     <div style="width: 100px;">
+                        <p style="font-family: 微软雅黑;color: white;font-size: 10px;">操作</p>
+                     </div>
+                  </div>
+                   </div>
+                   <br>
+                  
+                  <div id="fenye" style="width: 600px;height: 30px;">
+                      <div id="prevPage" style="width: 30px;height: 30px;float: left;border-radius: 50%;margin-left:150px;background-color: #24A593;text-align: center;line-height: 15px;display: none;">
+                         <p style="font-family: 微软雅黑;color: white;font-size: 5px;">上一页</p>
+                      </div>
+                      <div id="nextPage" style="width: 30px;height: 30px;float: left;margin-left: 150px;border-radius: 50%;background-color: #24A593;text-align: center;line-height: 15px;display: none;">
+                        <p style="font-family: 微软雅黑;color: white;font-size: 5px;">下一页</p>
+                      </div>
+                  </div>
+                </div>
+
+                <!--右边之文章编辑-->
+
+                <div id="myPersonCenter5" style="width: 600px;float: right;display: none;">
+                    <div style="width: 600px;height: 40px;line-height: 40px;">
+                        <span style="float: left;font-family: 微软雅黑;">文章标题：</span>
+                        <div style="width: 520px;height: 40px;background-color: yellow;float: right;">
+                           <input id="articleTile" type="text" placeholder="最多输入30个字符" maxlength="30" minlength="5" style="width: 520px;height: 40px;"></input>
+                        </div>
+                    </div><br>
+                    <div  style="width: 600px;height: 120px;">
+                      <span style="float: left;font-family: 微软雅黑;">文章类型：</span>
+                      <div id="articleType"  style="float: right;width: 500px;">
+                         <div id="articleTypeSelected" style="width: 100px;height: 30px;background-color: red;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)" th:value="1">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">疾病小常识</p>
+                         </div>
+                         <div th:value="2" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">运动小知识</p>
+                         </div>
+                         <div th:value="3" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">日常疾病</p>
+                         </div>
+                         <div th:value="4" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">科学养生</p>
+                         </div>
+                         <div th:value="5" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">健康食谱</p>
+                         </div>
+                         <div th:value="6" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">病后恢复</p>
+                         </div>
+                         <div th:value="7" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">今日报道</p>
+                         </div>
+                         <div th:value="8" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;margin-bottom: 5px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">骨科介绍</p>
+                         </div>
+                         <div th:value="9" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">感冒小课堂</p>
+                         </div>
+                         <div th:value="10" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">女生小秘密</p>
+                         </div>
+                         <div th:value="11" style="width: 100px;height: 30px;background-color: white;border-radius:3px;position:relative ;text-align: center;line-height: 20px;float: left;margin-right: 10px;line-height: 30px;" onclick="articleType(this)">
+                           <p style="font-size: 10px;font-family: 微软雅黑;color:#24A593">其他</p>
+                         </div>
+                         
+                      </div>
+                    </div><br>
+                    <div style="width: 600px;overflow: auto;">
+                        <div style="width: 600px;height: 20px;">
+                            <span  style="float: left;font-family: 微软雅黑;">文章内容：</span>
+                            <div id="keep3" style="width: 50px;height: 20px;background-color: red;line-height: 20px;float: right;text-align: center;">
+                                <p style="font-family: 微软雅黑;color: white;font-weight: bold;" onclick="saveArticle()">保存</p>
+                            </div>
+                        </div>
+                        <div style="width: 600px;height: 800px;">
+                             <div id="editor" type="text/plain" style="width:599px;height:500px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+             <div id="message" style="width: 300px;height: 100px;background-color: black;opacity: 0.6;position: absolute;top: 270px;left: 600px;text-align: center;line-height: 100px;display: none;">
+                 <p style="font-size: 20px;font-family: 微软雅黑;font-weight: bold;color: white;"></p>
+             </div>
+                              
+      </div>
+
+<script type="text/javascript">
+
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor',{
+        toolbars:  [
+    [
+        'undo', //撤销
+        'redo', //重做
+        'bold', //加粗
+        'indent', //首行缩进
+        'italic', //斜体
+        'underline', //下划线
+        'strikethrough', //删除线
+        'subscript', //下标
+        'fontborder', //字符边框
+        'superscript', //上标
+        'formatmatch', //格式刷
+        'blockquote', //引用
+        'pasteplain', //纯文本粘贴模式
+        'selectall', //全选
+        'preview', //预览
+        'horizontal', //分隔线
+        'removeformat', //清除格式
+        'time', //时间
+        'date', //日期
+        'unlink', //取消链接
+        'insertrow', //前插入行
+        'insertcol', //前插入列
+        'mergeright', //右合并单元格
+        'mergedown', //下合并单元格
+        'deleterow', //删除行
+        'deletecol', //删除列
+        'splittorows', //拆分成行
+        'splittocols', //拆分成列
+        'splittocells', //完全拆分单元格
+        'deletecaption', //删除表格标题
+        'inserttitle', //插入标题
+        'deletetable', //删除表格
+        'cleardoc', //清空文档
+        'insertparagraphbeforetable', //"表格前插入行"
+        'fontfamily', //字体
+        'fontsize', //字号
+        'paragraph', //段落格式
+        'edittable', //表格属性
+        'edittd', //单元格属性
+        'link', //超链接
+        'emotion', //表情
+        'spechars', //特殊字符
+        'searchreplace', //查询替换
+        'justifyleft', //居左对齐
+        'justifyright', //居右对齐
+        'justifycenter', //居中对齐
+        'justifyjustify', //两端对齐
+        'forecolor', //字体颜色
+        'backcolor', //背景色
+        'insertorderedlist', //有序列表
+        'insertunorderedlist', //无序列表
+        'fullscreen', //全屏
+        'directionalityltr', //从左向右输入
+        'directionalityrtl', //从右向左输入
+        'rowspacingtop', //段前距
+        'rowspacingbottom', //段后距
+        'pagebreak', //分页
+        'insertframe', //插入Iframe
+        'imagenone', //默认
+        'imageleft', //左浮动
+        'imageright', //右浮动
+        'imagecenter', //居中
+        'lineheight', //行间距
+        'edittip ', //编辑提示
+        'customstyle', //自定义标题
+        'autotypeset', //自动排版
+        'touppercase', //字母大写
+        'tolowercase', //字母小写
+        'background' //背景
+        ]
+    ],
+        autoHeightEnabled: true,
+        autoFloatEnabled: true
+    });
+    
+  function saveArticle() {
+    var articleTile=$("#articleTile").val();
+    var articleType=$("#articleTypeSelected").attr("value");
+    var articleContent=UE.getEditor('editor').getContent();
+
+    if (articleTile.trim()==""||articleTile==null){
+        $("#message p").text("标题不能为空");
+        $("#message").show();
+        setTimeout(function () {
+            $("#message").css("display","none");
+        },2000);
+        return;
+    }
+      if (!UE.getEditor('editor').hasContents()){
+          $("#message p").text("文章内容不能为空");
+          $("#message").show();
+          setTimeout(function () {
+              $("#message").css("display","none");
+          },2000);
+          return;
+      }
+      var id=$("#keep3 p").attr("value");
+      //保存草稿箱
+      $.ajax({
+          url:"http://localhost/article/saveArticle",
+          dataType:"text",   
+          data:{"title":articleTile,"type":articleType,"content":articleContent,"id":id},
+          type:"POST",   
+          success:function(data){
+              $("#keep3 p").attr("value",null);
+              $("#articleTile").val(null);
+              UE.getEditor('editor').setContent('');
+              $("#message p").text("保存成功");
+              $("#message").show();
+              setTimeout(function () {
+                  $("#message").css("display","none");
+              },2000);
+          }
+      });
+
+  };
+
+    function editArticle(a) {
+        $.ajax({
+            url: "http://localhost/article/toEditPage",
+            dataType: "json",
+            data: {"id": a},
+            type: "get",
+            cache: false,
+            success: function (data) {
+                myPerson(5);
+                $("#keep3 p").attr("value",data.id);
+                $("#articleTile").val(data.title);
+                $("#articleType div").css("background-color","white").attr("id",null);
+                $("#articleType div[value='"+data.type+"']").css("background-color","red").attr("id","articleTypeSelected");
+                UE.getEditor('editor').setContent(data.content);
+
+
+            }
+        });
+    };
+</script>
+ <script>
+            layui.use('upload', function(){
+                var upload = layui.upload;
+                //选完文件后不自动上传
+                upload.render({
+                    elem: '#selectPicture'
+                    ,url: '/article/uploadPicture'
+                    ,auto: true
+                    ,accept: 'images'
+                    ,size: '10240'
+                    ,done: function(res){
+                        var layer = layui.layer;
+                        layer.msg('图片上传成功', {
+                            icon: 6,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            window.location.href="http://localhost/article/person";
+                        });
+                    }
+                });
+            });
+ </script>
+
+	    	<br><br><br><br><br><br><br>
+	    		<!--font-->
+        <div style="width: 1000px;height: 100px;margin: auto;line-height: 30px;font-size: 15px;color: gray;text-align: center;">
+        	 
+             <p>关于我们 | 友情链接 | 版权声明 | 客服中心 | 联系我们</p>
+             <p>版权声明 | 作者编委 | 投稿邮箱 1225125821@qq.com</p>
+             <p>地址：中国-内江师范学院</p>
+        </div>
+
+    
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="span2" th:fragment="minHead">
+    <div class="main-left-col">
+        <h1 th:if="${session.admin ne null}" th:style="'background:url(' + ${session.admin.pictureSrc} + ');'"></h1>
+        <ul class="side-nav">
+            <li class="active">
+                <a href="/index"><i class="icon-home"></i> 主页</a>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> 个人中心 <b class="caret"></b></a>
+                <ul id="website-dropdown" class="collapse">
+                    <li><a href="/personCenter">个人中心</a></li>
+                    <li><a href="/articleCenter">文章中心</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="collapse" data-target="#store-dropdown" href="#"><i class="icon-shopping-cart"></i> 用户管理 <b class="caret"></b></a>
+                <ul id="store-dropdown" class="collapse">
+                    <li><a href="/userCenter">用户信息</a></li>
+                    <li><a href="/userManage">文章管理</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="collapse" data-target="#reports-dropdown" href="#"><i class="icon-signal"></i> 图片管理 <b class="caret"></b></a>
+                <ul id="reports-dropdown" class="collapse">
+                    <li><a href="/adUpload">图片上传</a></li>
+                    <li><a href="/adManage.html">图片管理</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="collapse" data-target="#members-dropdown" href="#"><i class="icon-group"></i> 医院管理 <b class="caret"></b></a>
+                <ul id="members-dropdown" class="collapse">
+                    <li><a href="/history.html">医院信息</a></li>
+                    <li><a href="/historyList.html">医院列表</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="collapse" data-target="#settings-dropdown" href="#"><i class="icon-cogs"></i> 疾病信息 <b class="caret"></b></a>
+                <ul id="settings-dropdown" class="collapse">
+                    <li><a href="/illness.html">疾病信息录入</a></li>
+                    <li><a href="/illnessList.html">疾病列表</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

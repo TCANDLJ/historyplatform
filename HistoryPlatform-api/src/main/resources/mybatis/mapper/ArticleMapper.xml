@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._520it.mapper.ArticleMapper">
+
+     <insert id="saveArticle">
+         INSERT INTO article(userid,title,`type`,content,read_num,create_time,status)
+         VALUES (#{userId},#{title},#{type},#{content},#{readNum},now(),#{status});
+
+     </insert>
+     
+    <select id="getArticles" resultType="com._520it.pojo.Article">
+       select t.id id,t.title title,t.create_time createTime,t.`status` status  from  article t
+        where t.userid=#{userId} AND  t.status=#{status}
+        ORDER BY t.create_time desc
+       <if test="#{page == true}">
+        limit #{startIndex},#{endIndex}
+       </if>
+
+    </select>
+    
+    <select id="countArticles" resultType="java.lang.Integer">
+       select count(1) from article t where t.userid=#{userId}   and t.`status`=#{status}
+    </select>
+    <delete id="deleteArticle">
+        DELETE  FROM article WHERE  id=#{id}
+    </delete>
+    <update id="applyArticle">
+        update article t set t.`status`=4 where t.id=#{id}
+    </update>
+    <select id="toEditPage" resultType="com._520it.pojo.Article">
+       SELECT t.id id,t.title title,t.content content,t.type type  from article t where  t.id=#{id}
+    </select>
+    <update id="updateArticle" parameterType="com._520it.pojo.Article">
+
+        UPDATE  article t  set t.title=#{title}  ,t.content=#{content}, t.type=#{type}  where t.id=#{id}
+    </update>
+
+    <select id="countTotal" resultType="java.lang.Integer">
+
+        SELECT count(1) FROM article t WHERE t.type=#{type}
+        AND DATE(create_time) &lt;=#{endDate}
+        and DATE(create_time) >=#{startDate}
+        AND t.status in (2,3,4)
+    </select>
+
+    <select id="queryArticles" resultType="com._520it.pojo.Article">
+
+        SELECT t.id id,t.title title,(select name from user where id=t.userid) userId ,DATE(t.create_time) createTime,
+         t.read_num readNum,t.status,t.type
+         FROM article t WHERE t.type=#{article.type}
+        AND DATE(create_time) &lt;=#{article.endDate}
+        and DATE(create_time) >=#{article.startDate}
+        AND t.status in (2,3,4)
+        ORDER BY t.create_time desc
+        limit #{startIndex},#{endIndex}
+
+    </select>
+    
+    <select id="queryIndexArticles" resultType="com._520it.pojo.Article">
+    select t.id,t.title from article t where t.status=3  order by t.create_time  desc limit 0,16
+    </select>
+    <select id="queryOtherArticle" resultType="com._520it.pojo.Article">
+        select id,title from article where
+        userid=(select  t.userid from article t where t.id=#{id})
+        and id &lt;> #{id}
+        order by create_time desc
+        limit 0,5
+    </select>
+    <select id="queryNews" resultType="com._520it.pojo.Article">
+        SELECT
+            t.id,
+            t.title,
+            t.type,
+            t.create_time createTime,
+            t.read_num readNum,
+            (
+                SELECT
+                    NAME
+                FROM
+                    user
+                WHERE
+                    id = t.userid
+            ) userId,
+        REPLACE(LEFT(t.content, 60),'&lt;p>','') content
+        FROM
+            article t
+        WHERE
+        <if test="type !=0">
+            t.type = #{type}
+            AND t. STATUS = 3
+            ORDER BY
+            t.create_time DESC
+            LIMIT 10
+        </if>
+        <if test="type ==0">
+             t. STATUS = 3
+            ORDER BY
+            t.read_num DESC,t.create_time DESC
+            LIMIT 10
+        </if>
+
+</select>
+    <update id="updateArticleReadNum">
+        UPDATE   article  set read_num=IFNULL(read_num,0)+1 WHERE  id=#{id}
+    </update>
+
+</mapper>

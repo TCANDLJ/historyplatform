@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HistoryPlatform-api/HistoryPlatform-api.iml" filepath="$PROJECT_DIR$/HistoryPlatform-api/HistoryPlatform-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HistoryPlatform-userserver/HistoryPlatform-userserver.iml" filepath="$PROJECT_DIR$/HistoryPlatform-userserver/HistoryPlatform-userserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HistoryPlatforms.iml" filepath="$PROJECT_DIR$/HistoryPlatforms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/historyplatform-adminserver/historyplatform-adminserver.iml" filepath="$PROJECT_DIR$/historyplatform-adminserver/historyplatform-adminserver.iml" />
+    </modules>
+  </component>
+</project>

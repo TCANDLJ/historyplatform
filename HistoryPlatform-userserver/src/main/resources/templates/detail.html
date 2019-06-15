@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>人民医院公众服务平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="/css/slider.css">
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				
+			});
+			function showDetail(a){
+			   if($("#s"+a).css("overflow") == "hidden"){
+			   $("#s"+a).css("height","auto").css("overflow","visible");
+               $("#blick"+a).val("关闭更多<<");
+           }else{
+           	   $("#s"+a).css("height","100px").css("overflow","hidden");
+               $("#blick"+a).val("查看更多>>");
+           }
+
+			}
+			function showColor(a) {
+			    $(".keshi div").css("background-color","Lavender");
+				$(a).parent().parent().css("background-color","#24A593");
+            }
+</script>
+<style type="text/css">
+    *{padding:0;margin:0;}
+    body{
+    	background-color: 	Lavender;
+    }
+
+	li{
+				list-style: none;
+				font-family: 微软雅黑;
+				line-height: 50px;
+				font-size: 15px;
+				float: left;
+				 margin-right: 150px;
+		}
+	.keshi p:hover{
+		background-color:  #24A593 ;
+		cursor: pointer;
+		border-radius: 8px;
+	}
+</style>
+
+</head>
+<body>
+			<!--minhead-->
+			<div th:replace="minhead::minhead"></div>
+
+			<div class="header-middle" style="background-color: white;">
+			  <div class="header-search">
+			   <form th:action="@{/illness/queryIllness}" th:method="post">
+				<div class="search" style="width: 450px;border: 1px solid Lavender ;">
+					<input type="search"  name="name"  th:value="${illness !=null?illness.name:''}"  placeholder="请输入查询疾病名称，比如：感冒"  onfocus="this.value = '';" onblur="if (this.value.trim() == '') {this.value = null;}" required="">
+				</div>
+				<div  class="sear-sub">
+					<input type="submit" value="搜索">
+				</div>
+				<div class="clearfix"></div>
+			</form>
+	    	</div>
+	    	 <!-- 导航条-->
+           <div style="width: 1200px;height: 50px;background-color: white;margin: auto;" >
+              <li><a href="/">首页</a></li>
+              <li><a href="/online.html">在线就诊</a></li>
+              <li><a href="/history/queryHistory">全国医院</a></li>
+              <li><a href="/article/queryNews/0">健康科普</a></li>
+              <li><a href="/tribune.html" target="_blank">病友论坛</a></li>
+           </div>
+	    	</div><br><br>
+	    	<div style="width: 1200px;height: 200px;margin: auto;">
+	    	  <div style="width: 800px;height: 200px;background-color: white;margin: auto;float: left;margin-right: 20px;">
+	    	   <div style="width: 100px;height: 50px;line-height: 50px;text-align: center;">
+		       	<p style="font-size: 20px;font-family: 微软雅黑;">科室</p>
+		       </div>
+               <div class="keshi" style="width: 800px;height: 150px;line-height: 50px;">
+               	  <div style="width: 100px;height: 40px;background-color: #24A593 ;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;border-radius:8px;"><a onclick="showColor(this)">不限</a></p>
+               	  </div>
+               	   <div  style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p  style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">皮肤性病科</a></a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)" >消化内科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">内分泌科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">呼吸内科</a></p>
+               	  </div><br>
+               	  <div style="width: 100px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">妇产科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">眼科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">肝胆胰腺外科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">风湿免疫科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">泌尿外科</a></p>
+               	  </div><br>
+               	  <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">普通内科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">普外科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">儿科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;margin-right: 20px;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">神经内科</a></p>
+               	  </div>
+               	   <div style="width: 120px;height: 40px;background-color: Lavender;border-radius:8px;position:relative ;left: 30px;text-align: center;line-height: 40px;float: left;">
+               	  	<p style="font-size: 15px;font-family: 微软雅黑;"><a onclick="showColor(this)">其他</a></p>
+               	  </div>
+               </div>
+			</div>
+			<div style="width: 380px;height: 200px;margin: auto;float: right;background-color: white;">
+				<div style="width: 360px;height: 50px;line-height: 50px;position: relative;left: 20px;">
+					<p style="font-family: 微软雅黑;font-size: 20px;">常见疾病</p>
+				</div>
+				<div style="width: 360px;height: 150px;line-height: 50px;position: relative;left: 20px;">
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/过敏">过敏</a></p>
+				    </div>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/肺炎">肺炎</a></p>
+				    </div>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/脱水">脱水</a></p>
+				    </div><br>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/感冒">感冒</a></p>
+				    </div>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/高血压">高血压</a></p>
+				    </div>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/糖尿病">糖尿病</a></p>
+				    </div><br>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/骨折">骨折</a></p>
+				    </div>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/烫伤">烫伤</a></p>
+				    </div>
+				    <div style="width: 100px;height: 20px;line-height: 20px;float: left;text-align: center;">
+				    	<p style="font-family: 微软雅黑;font-size: 10px;"><a href="/illness/query/近视">近视</a></p>
+				    </div>
+				</div>
+			</div>
+	    	</div><br><br>
+	    	<div  style="width: 1200px;height: auto;background-color: white;margin: auto;" th:if="${result ne null}" th:each="illness:${result}">
+	    		<div style="width: 1200px;height: 50px;line-height: 50px;text-align: center;">
+	    			<p style="font-family: 微软雅黑;font-size: 20px;" th:text="${illness !=null?illness.name:''}">疾病名称<p>
+	    		</div>
+                <div th:id="'s'+${illnessStat.index}" style="width: 1200px;height: 100px;overflow: hidden;">
+                    <p style="font-family: 微软雅黑;font-size: 20px;line-height: 20px;">病因描述：</p><br>
+                	<p style="font-family: 微软雅黑;font-size: 15px;line-height: 20px;" th:text="${illness !=null?illness.etiology:''}"></p><br>
+                	<p style="font-family: 微软雅黑;font-size: 20px;line-height: 20px;">病情症状：</p><br>
+                	<p style="font-family: 微软雅黑;font-size: 15px;line-height: 20px;" th:text="${illness !=null?illness.illness:''}"></p><br>
+                	<p style="font-family: 微软雅黑;font-size: 20px;line-height: 20px;">医院推荐：</p><br>
+                	<p style="font-family: 微软雅黑;font-size: 15px;line-height: 20px;" th:text="${illness !=null?illness.history:''}"></p><br>
+                </div>
+                 <div id="b1" style="width: 100px;height: 20px;position: relative;left: 1114px;top:-20px;color: white;">
+                   <input style="background-color:#1E90FF " th:id="'blick'+${illnessStat.index}" type="button" value="查看更多>>" th:onclick="'showDetail('+${illnessStat.index}+')'"/>
+                  </div>
+				    <div style="width: 100%;height: 20px;background-color: Lavender;margin: auto;"> </div>
+                </div>
+	    	<br><br><br><br><br><br><br><br>
+	    		<!--font-->
+        <div style="width: 1300px;height: 100px;margin: auto;line-height: 30px;font-size: 15px;color: gray;text-align: center;">
+             <p>关于我们 | 友情链接 | 版权声明 | 客服中心 | 联系我们</p>
+             <p>版权声明 | 作者编委 | 投稿邮箱 1225125821@qq.com</p>
+             <p>地址：中国-内江师范学院</p>
+        </div>
+
+    
+</body>
+</html>
